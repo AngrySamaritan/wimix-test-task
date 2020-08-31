@@ -1,0 +1,3 @@
+security:
+  password:
+    min-length: 5

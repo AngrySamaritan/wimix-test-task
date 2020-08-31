@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "security.password.min-length",
+      "type": "java.lang.Integer",
+      "description": "Minimal password length."
+    }
+  ]
+}
