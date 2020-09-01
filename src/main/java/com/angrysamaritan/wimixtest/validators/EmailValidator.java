@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.validdators;
+package com.angrysamaritan.wimixtest.validators;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

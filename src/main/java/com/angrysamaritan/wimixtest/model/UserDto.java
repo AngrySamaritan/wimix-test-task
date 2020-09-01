@@ -1,10 +1,13 @@
 package com.angrysamaritan.wimixtest.model;
 
-import com.angrysamaritan.wimixtest.validdators.PasswordsMatches;
-import com.angrysamaritan.wimixtest.validdators.ValidEmail;
-import com.angrysamaritan.wimixtest.validdators.ValidPassword;
+import com.angrysamaritan.wimixtest.validators.PasswordsMatches;
+import com.angrysamaritan.wimixtest.validators.ValidEmail;
+import com.angrysamaritan.wimixtest.validators.ValidPassword;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
 
 @PasswordsMatches
 public class UserDto {
@@ -20,6 +23,7 @@ public class UserDto {
 
     @Getter
     @Setter
+    @JsonProperty("password_confirm")
     private String passwordConfirm;
 
     @Setter
@@ -29,9 +33,13 @@ public class UserDto {
 
     @Getter
     @Setter
+    @JsonProperty("first_name")
+    @NotBlank
     private String firstName;
 
     @Getter
     @Setter
+    @JsonProperty("last_name")
+    @NotBlank
     private String lastName;
 }

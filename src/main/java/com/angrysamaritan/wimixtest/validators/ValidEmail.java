@@ -1,15 +1,17 @@
-package com.angrysamaritan.wimixtest.validdators;
+package com.angrysamaritan.wimixtest.validators;
 
+import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PasswordsMatches {
-    String message() default "Passwords doesn't match";
+@Constraint(validatedBy = EmailValidator.class)
+public @interface ValidEmail {
+    String message() default "Wrong email format";
     Class<?>[] group() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -1,5 +1,6 @@
 package com.angrysamaritan.wimixtest.control;
 
+import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.model.UserDto;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.SignUpService;
@@ -7,11 +8,10 @@ import org.hibernate.HibernateException;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -25,19 +25,19 @@ public class SignUpController {
         this.userRepo = userRepo;
     }
 
-    @GetMapping("/sign_up")
-    public String users(@ModelAttribute @Valid UserDto userDto, Errors errors, HttpServletRequest request) throws JSONException {
+    @PostMapping("/sign_up")
+    public String users(@Valid @RequestBody UserDto userDto, Errors errors) throws JSONException {
         JSONObject response = new JSONObject();
         if (errors.hasErrors()) {
             response.put("errors", signUpService.processErrors(errors));
         } else {
             try {
-                userRepo.save(signUpService.processDto(userDto));
+                User user = userRepo.save(signUpService.processDto(userDto));
+                response.put("user_id", user.getId());
             } catch (HibernateException e) {
                 response.put("errors", new JSONObject().put("username", "Username exist"));
             }
         }
-        response.put("request", request);
-        return null;
+        return response.toString();
     }
 }

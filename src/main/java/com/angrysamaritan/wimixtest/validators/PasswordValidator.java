@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.validdators;
+package com.angrysamaritan.wimixtest.validators;
 
 import org.springframework.beans.factory.annotation.Value;
 

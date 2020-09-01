@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.validdators;
+package com.angrysamaritan.wimixtest.validators;
 
 import com.angrysamaritan.wimixtest.model.UserDto;
 
