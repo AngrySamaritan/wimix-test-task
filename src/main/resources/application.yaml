@@ -3,6 +3,8 @@ security:
     min-length: 5
 
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     active: ${ACTIVE_PROFILE}
   jpa:

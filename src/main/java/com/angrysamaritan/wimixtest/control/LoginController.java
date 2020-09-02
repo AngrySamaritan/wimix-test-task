@@ -4,6 +4,8 @@ import com.angrysamaritan.wimixtest.model.JWTRequest;
 import com.angrysamaritan.wimixtest.model.JWTResponse;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.UserDetailsServiceImpl;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,12 +31,12 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @ModelAttribute JWTRequest authenticationRequest) {
+    public String login(@RequestBody JWTRequest authenticationRequest) throws JSONException {
         String username = authenticationRequest.getUsername();
         authenticate(username, authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         final String token = jwtService.generateToken(userDetails);
-        return ResponseEntity.ok(new JWTResponse(token));
+        return new JSONObject().put("token", token).toString();
     }
 
     private void authenticate(String username, String password) {

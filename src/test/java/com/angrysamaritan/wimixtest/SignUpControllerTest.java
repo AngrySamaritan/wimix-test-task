@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -36,5 +37,21 @@ public class SignUpControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andDo(print())
                 .andExpect(content().json("errors", false));
+    }
+
+    @Test
+    public void testUserSignUpSuccess() throws Exception {
+        JSONObject params = new JSONObject();
+        params.put("username", "Andrei");
+        params.put("email", "test@mail.by");
+        params.put("password", "123456");
+        params.put("password_confirm", "123456");
+        params.put("first_name", "A");
+        params.put("last_name", "Test");
+
+        mockMvc.perform(post("/sign_up")
+                .contentType(MediaType.APPLICATION_JSON).content(params.toString()))
+                .andDo(print())
+                .andExpect(status().is(200));
     }
 }
