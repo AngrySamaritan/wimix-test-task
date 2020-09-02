@@ -5,7 +5,6 @@ import com.angrysamaritan.wimixtest.model.UserDto;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.SignUpService;
 import org.hibernate.HibernateException;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,7 @@ public class SignUpController {
     }
 
     @PostMapping("/sign_up")
-    public String users(@Valid @RequestBody UserDto userDto, Errors errors) throws JSONException {
+    public String users(@Valid @RequestBody UserDto userDto, Errors errors) throws Exception {
         JSONObject response = new JSONObject();
         if (errors.hasErrors()) {
             response.put("errors", signUpService.processErrors(errors));
