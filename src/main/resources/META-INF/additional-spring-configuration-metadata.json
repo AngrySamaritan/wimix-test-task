@@ -4,6 +4,11 @@
       "name": "security.password.min-length",
       "type": "java.lang.Integer",
       "description": "Minimal password length."
+    },
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "Secret key for jwt generator."
     }
   ]
 }
