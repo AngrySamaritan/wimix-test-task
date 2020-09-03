@@ -34,3 +34,8 @@ build/
 
 ### DB ###
 *.db
+
+### Config ###
+**/application-dev.yaml
+
+
