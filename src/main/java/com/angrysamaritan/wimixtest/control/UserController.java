@@ -1,10 +1,17 @@
 package com.angrysamaritan.wimixtest.control;
 
-import com.angrysamaritan.wimixtest.model.PatchUserDto;
 import com.angrysamaritan.wimixtest.service.UserService;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.nio.charset.Charset;
 
 @RestController
 public class UserController {
@@ -19,21 +26,23 @@ public class UserController {
     public String getUsers(@RequestBody String params) throws Exception {
         try {
             JSONObject paramsJson = new JSONObject(params);
-            switch (paramsJson.getString("operation")) {
-                case "get_profile":
-                    return userService.getProfile(paramsJson.getLong("user_id")).toString();
-                case "get_by_first_name":
-                    return userService.getProfilesByFirstName(paramsJson.getString("first_name"),
-                            paramsJson.getInt("page"), paramsJson.getInt("size")).toString();
+            if (paramsJson.has("user_id")) {
+                return userService.getProfile(paramsJson.getLong("user_id")).toString();
             }
+            if (paramsJson.has("first_name")) {
+                return userService.getProfilesByFirstName(paramsJson.getString("first_name"),
+                        paramsJson.getInt("page"), paramsJson.getInt("size")).toString();
+            }
+            throw HttpClientErrorException.BadRequest.create(HttpStatus.BAD_REQUEST,
+                    "No operation found matching transmitted params", HttpHeaders.EMPTY, "Bad request".getBytes(), Charset.defaultCharset());
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw HttpClientErrorException.BadRequest.create(HttpStatus.BAD_REQUEST,
+                    "Not all required params found", HttpHeaders.EMPTY, null, Charset.defaultCharset());
         }
-        return new JSONObject("{error: wrong operation}").toString();
     }
 
     @PatchMapping("/users")
-    public String patchUsers(@RequestBody @ModelAttribute PatchUserDto userDto) {
-        return null;
+    public String patchUsers(@RequestBody String patchInfo) throws JSONException {
+        return new JSONObject().put("user_id", userService.patchCurrentUser(new JSONObject(patchInfo))).toString();
     }
 }
