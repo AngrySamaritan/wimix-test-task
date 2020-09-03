@@ -1,5 +1,6 @@
 package com.angrysamaritan.wimixtest;
 
+import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.JWTService;
@@ -53,10 +54,11 @@ public class LoginControllerTest {
     public void addUser() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user = new User();
-        user.setEmail("test@mail.test");
+        user.setProfile(new Profile());
+        user.getProfile().setEmail("test@mail.test");
         user.setUsername("testUsername");
-        user.setFirstName("A");
-        user.setLastName("A");
+        user.getProfile().setFirstName("A");
+        user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
         user = userRepo.save(user);
     }

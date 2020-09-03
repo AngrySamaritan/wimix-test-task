@@ -6,25 +6,28 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private long id;
+    long id;
 
     @Getter
     @Setter
-    @Column(unique = true)
-    private String username;
+    private String firstName;
 
     @Getter
     @Setter
-    private String password;
+    private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
+
     @Getter
     @Setter
-    private Profile profile;
+    private String email;
+
+    @OneToOne(mappedBy = "profile")
+    @Getter
+    @Setter
+    private User user;
 }

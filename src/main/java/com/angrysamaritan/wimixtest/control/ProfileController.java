@@ -1,5 +1,6 @@
 package com.angrysamaritan.wimixtest.control;
 
+import com.angrysamaritan.wimixtest.model.ProfileDto;
 import com.angrysamaritan.wimixtest.service.UserService;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -11,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.Valid;
 import java.nio.charset.Charset;
 
 @RestController
-public class UserController {
+public class ProfileController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public ProfileController(UserService userService) {
         this.userService = userService;
     }
 
@@ -42,7 +44,7 @@ public class UserController {
     }
 
     @PatchMapping("/users")
-    public String patchUsers(@RequestBody String patchInfo) throws JSONException {
-        return new JSONObject().put("user_id", userService.patchCurrentUser(new JSONObject(patchInfo))).toString();
+    public String patchUsers(@RequestBody @Valid ProfileDto profileDto) throws JSONException {
+        return new JSONObject().put("user_id", userService.patchCurrentProfile(profileDto)).toString();
     }
 }

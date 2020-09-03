@@ -31,7 +31,7 @@ public class SignUpController {
             response.put("errors", signUpService.processErrors(errors));
         } else {
             try {
-                User user = userRepo.save(signUpService.processDto(userDto));
+                User user = userRepo.save(signUpService.signIn(userDto));
                 response.put("user_id", user.getId());
             } catch (HibernateException e) {
                 response.put("errors", new JSONObject().put("username", "Username exist"));

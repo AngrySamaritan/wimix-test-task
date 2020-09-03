@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
 
-    @Query("select u from User u where u.firstName = :firstName")
+    @Query("select u from User u join u.profile p where p.firstName = :firstName")
     Page<User> getUsersByFirstName(String firstName, Pageable pageable);
 
 

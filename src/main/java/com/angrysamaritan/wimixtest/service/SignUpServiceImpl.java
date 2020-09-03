@@ -14,12 +14,9 @@ import java.util.Objects;
 public class SignUpServiceImpl implements SignUpService {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User processDto(UserDto userDto) {
+    public User signIn(UserDto userDto) {
         User user = new User();
-        user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
         user.setPassword(encoder.encode(userDto.getPassword()));
         return user;
     }
@@ -34,4 +31,6 @@ public class SignUpServiceImpl implements SignUpService {
         }
         return errorsJson;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.angrysamaritan.wimixtest;
 
+import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.JWTService;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class ProfileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -63,26 +65,29 @@ public class UserControllerTest {
     public void addUser() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = new User();
-        user.setEmail("test@mail.test");
+        user.setProfile(new Profile());
+        user.getProfile().setEmail("test@mail.test");
         user.setUsername("testUsername");
-        user.setFirstName("A");
-        user.setLastName("A");
+        user.getProfile().setFirstName("A");
+        user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
         user = userRepo.save(user);
         users.add(user);
         user = new User();
-        user.setEmail("tuser2@masl.test");
+        user.setProfile(new Profile());
+        user.getProfile().setEmail("tuser2@masl.test");
         user.setUsername("usr2Username2");
-        user.setFirstName("A");
-        user.setLastName("AS");
+        user.getProfile().setFirstName("A");
+        user.getProfile().setLastName("AS");
         user.setPassword(encoder.encode("12345"));
         user = userRepo.save(user);
         users.add(user);
         user = new User();
-        user.setEmail("user3@mail.test");
+        user.setProfile(new Profile());
+        user.getProfile().setEmail("user3@mail.test");
         user.setUsername("Username3");
-        user.setFirstName("TRA");
-        user.setLastName("RA");
+        user.getProfile().setFirstName("TRA");
+        user.getProfile().setLastName("RA");
         user.setPassword(encoder.encode("12345"));
         user = userRepo.save(user);
         users.add(user);
@@ -115,6 +120,7 @@ public class UserControllerTest {
         users = new JSONArray(result.getResponse().getContentAsString());
         Assert.assertEquals(1, users.length());
     }
+
 
     @After
     public void deleteUser() {
