@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -27,4 +28,9 @@ public class User {
     @Getter
     @Setter
     private Profile profile;
+
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "user")
+    List<Notification> notifications;
 }

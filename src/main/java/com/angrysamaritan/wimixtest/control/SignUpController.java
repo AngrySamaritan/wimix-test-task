@@ -3,9 +3,11 @@ package com.angrysamaritan.wimixtest.control;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.model.UserDto;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.service.NotificationService;
 import com.angrysamaritan.wimixtest.service.SignUpService;
 import org.hibernate.HibernateException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,10 +20,14 @@ public class SignUpController {
 
     private final SignUpService signUpService;
     private final UserRepo userRepo;
+    private final NotificationService notificationService;
+    private final SimpMessagingTemplate template;
 
-    public SignUpController(SignUpService signUpService, UserRepo userRepo) {
+    public SignUpController(SignUpService signUpService, UserRepo userRepo, NotificationService notificationService, SimpMessagingTemplate template) {
         this.signUpService = signUpService;
         this.userRepo = userRepo;
+        this.notificationService = notificationService;
+        this.template = template;
     }
 
     @PostMapping("/sign_up")
