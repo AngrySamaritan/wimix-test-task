@@ -35,8 +35,12 @@ public class User {
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "sender")
+    @Getter
+    @Setter
     private List<Message> sentMessages;
 
     @OneToMany(mappedBy = "recipient")
+    @Getter
+    @Setter
     private List<Message> receivedMessages;
 }

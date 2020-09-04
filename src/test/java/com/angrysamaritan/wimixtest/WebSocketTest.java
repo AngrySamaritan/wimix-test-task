@@ -2,11 +2,13 @@ package com.angrysamaritan.wimixtest;
 
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
+import com.angrysamaritan.wimixtest.repos.MessageRepo;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.NotificationService;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -126,5 +128,14 @@ public class WebSocketTest {
         public void handleFrame(StompHeaders stompHeaders, Object o) {
             blockingQueue.offer(new String((byte[]) o));
         }
+    }
+
+    @Autowired
+    private MessageRepo messageRepo;
+
+    @After
+    public void deleteUser() {
+        messageRepo.deleteAll();
+        userRepo.delete(user);
     }
 }
