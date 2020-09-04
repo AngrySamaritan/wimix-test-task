@@ -29,11 +29,6 @@ public class User {
     @Setter
     private Profile profile;
 
-    @Getter
-    @Setter
-    @OneToMany(mappedBy = "user")
-    private List<Notification> notifications;
-
     @OneToMany(mappedBy = "sender")
     @Getter
     @Setter
