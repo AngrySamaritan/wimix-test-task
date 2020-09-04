@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 @Service
 public interface SignUpService {
 
-    User signIn(UserDto userDto);
+    User signUp(UserDto userDto);
 
     JSONObject processErrors(Errors errors) throws Exception;
 }

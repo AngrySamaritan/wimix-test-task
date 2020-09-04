@@ -9,17 +9,15 @@ import org.springframework.stereotype.Controller;
 public class NotificationController {
 
     private final NotificationService notificationService;
-    private final SimpMessagingTemplate template;
 
-    public NotificationController(NotificationService notificationService, SimpMessagingTemplate template) {
+    public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
-        this.template = template;
     }
 
     @MessageMapping("/echo")
     public String send(String text) {
-        template.convertAndSend("/topic/notifications", "Test");
-        template.convertAndSend("/topic/notifications", "Test2");
+        notificationService.sendNotification("Test");
+        notificationService.sendNotification("Test2");
         return text;
     }
 }

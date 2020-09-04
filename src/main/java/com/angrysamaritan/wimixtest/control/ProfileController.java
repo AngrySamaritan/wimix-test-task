@@ -1,6 +1,8 @@
 package com.angrysamaritan.wimixtest.control;
 
 import com.angrysamaritan.wimixtest.model.ProfileDto;
+import com.angrysamaritan.wimixtest.model.User;
+import com.angrysamaritan.wimixtest.service.NotificationService;
 import com.angrysamaritan.wimixtest.service.UserService;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -17,8 +19,11 @@ public class ProfileController {
 
     private final UserService userService;
 
-    public ProfileController(UserService userService) {
+    private final NotificationService notificationService;
+
+    public ProfileController(UserService userService, NotificationService notificationService) {
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/users")
@@ -42,7 +47,10 @@ public class ProfileController {
 
     @PatchMapping("/users")
     public String patchUsers(@RequestBody @Valid ProfileDto profileDto) throws JSONException {
-        return new JSONObject().put("user_id", userService.patchCurrentProfile(profileDto).getId()).toString();
+        User user = userService.patchCurrentProfile(profileDto);
+        var response = new JSONObject().put("user_id", user.getId()).toString();
+        notificationService.sendNotification("User patch his profile: " + user.getUsername());
+        return response;
     }
 
     @DeleteMapping("/users")

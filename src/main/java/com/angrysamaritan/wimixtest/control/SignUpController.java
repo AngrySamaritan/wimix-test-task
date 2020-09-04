@@ -21,13 +21,11 @@ public class SignUpController {
     private final SignUpService signUpService;
     private final UserRepo userRepo;
     private final NotificationService notificationService;
-    private final SimpMessagingTemplate template;
 
-    public SignUpController(SignUpService signUpService, UserRepo userRepo, NotificationService notificationService, SimpMessagingTemplate template) {
+    public SignUpController(SignUpService signUpService, UserRepo userRepo, NotificationService notificationService) {
         this.signUpService = signUpService;
         this.userRepo = userRepo;
         this.notificationService = notificationService;
-        this.template = template;
     }
 
     @PostMapping("/sign_up")
@@ -37,8 +35,9 @@ public class SignUpController {
             response.put("errors", signUpService.processErrors(errors));
         } else {
             try {
-                User user = userRepo.save(signUpService.signIn(userDto));
+                User user = userRepo.save(signUpService.signUp(userDto));
                 response.put("user_id", user.getId());
+                notificationService.sendNotification("New user: " + user.getUsername());
             } catch (HibernateException e) {
                 response.put("errors", new JSONObject().put("username", "Username exist"));
             }

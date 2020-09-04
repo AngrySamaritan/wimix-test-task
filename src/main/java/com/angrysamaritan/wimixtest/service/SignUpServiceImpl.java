@@ -14,7 +14,7 @@ import java.util.Objects;
 public class SignUpServiceImpl implements SignUpService {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User signIn(UserDto userDto) {
+    public User signUp(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(encoder.encode(userDto.getPassword()));
