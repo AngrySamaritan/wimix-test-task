@@ -33,7 +33,9 @@ build/
 .vscode/
 
 ### DB ###
+<<<<<<< HEAD
 *.db
 
-### Yaml ###
-src/main/resources/application-dev.yaml
+### Config ###
+**/application-dev.yaml
+
