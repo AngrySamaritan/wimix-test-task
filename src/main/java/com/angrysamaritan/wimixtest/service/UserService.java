@@ -3,6 +3,7 @@ package com.angrysamaritan.wimixtest.service;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.ProfileDto;
 import com.angrysamaritan.wimixtest.model.User;
+import com.angrysamaritan.wimixtest.repos.ProfileRepo;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -22,9 +23,11 @@ import java.util.Collections;
 public class UserService {
 
     private final UserRepo userRepo;
+    private final ProfileRepo profileRepo;
 
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, ProfileRepo profileRepo) {
         this.userRepo = userRepo;
+        this.profileRepo = profileRepo;
     }
 
     public User getUserById(long userId) {
@@ -86,6 +89,16 @@ public class UserService {
                 user.getProfile().setLastName(lastName);
             }
         }
+        return user;
+    }
+
+
+    public User deleteCurrentProfile() {
+        User user = getCurrentUser();
+        Profile profile = user.getProfile();
+        user.setProfile(null);
+        user = userRepo.save(user);
+        profileRepo.delete(profile);
         return user;
     }
 }

@@ -6,10 +6,7 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
@@ -45,6 +42,11 @@ public class ProfileController {
 
     @PatchMapping("/users")
     public String patchUsers(@RequestBody @Valid ProfileDto profileDto) throws JSONException {
-        return new JSONObject().put("user_id", userService.patchCurrentProfile(profileDto)).toString();
+        return new JSONObject().put("user_id", userService.patchCurrentProfile(profileDto).getId()).toString();
+    }
+
+    @DeleteMapping("/users")
+    public String deleteProfile() throws JSONException {
+        return new JSONObject().put("user_id", userService.deleteCurrentProfile().getId()).toString();
     }
 }

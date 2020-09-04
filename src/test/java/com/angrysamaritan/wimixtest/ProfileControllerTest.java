@@ -5,17 +5,16 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.UserService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -47,7 +47,7 @@ public class ProfileControllerTest {
     @Autowired
     private UserService userService;
 
-    private List<User> users = new LinkedList<>();
+    private final List<User> users = new LinkedList<>();
     private String token;
 
     @Before
@@ -119,6 +119,14 @@ public class ProfileControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString())).andReturn();
         users = new JSONArray(result.getResponse().getContentAsString());
         Assert.assertEquals(1, users.length());
+    }
+
+    @Test
+    public void deleteProfile() throws Exception {
+        mockMvc.perform(delete("/users")
+                .header("Authorization", "Bearer " + token));
+        JSONObject profile = userService.getProfile(users.get(0).getId());
+        Assert.assertFalse(profile.has("profile"));
     }
 
 
