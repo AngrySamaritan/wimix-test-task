@@ -3,10 +3,4 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-  mail:
-    host: ${MAIL_SMTP_SERVER}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    port: ${MAIL_PORT}
-    protocol: smtps
 jwt.secret: ${JWT_SECRET}
