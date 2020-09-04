@@ -5,6 +5,8 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.NotificationService;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -28,6 +29,7 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -38,8 +40,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @RunWith(SpringRunner.class)
 public class WebSocketTest {
 
-    static final String WEBSOCKET_URI = "http://localhost:8080/websocket";
-    static final String WEBSOCKET_TOPIC = "/topic/notifications";
+    static final String WEBSOCKET_URI = "http://localhost:8080/ws";
+    static final String TOPIC_NOTIFICATIONS = "/topic/notifications";
 
     BlockingQueue<String> blockingQueue = new LinkedBlockingDeque<>();
     private WebSocketStompClient stompClient;
@@ -87,12 +89,32 @@ public class WebSocketTest {
         StompSession stompSession = stompClient.connect(WEBSOCKET_URI, new WebSocketHttpHeaders(httpHeaders),
                 new StompSessionHandlerAdapter(){}).get();
 
-        stompSession.subscribe(WEBSOCKET_TOPIC, new DefaultStompFrameHandler());
+        stompSession.subscribe(TOPIC_NOTIFICATIONS, new DefaultStompFrameHandler());
 
-        stompSession.send("/app/echo", "Lox".getBytes());
+        stompSession.send("/app/echo", "Testing".getBytes());
 
         Assert.assertEquals("Test", blockingQueue.poll(3, SECONDS));
         Assert.assertEquals("Test2", blockingQueue.poll(3, SECONDS));
+    }
+
+    @Test
+    public void testChat() throws InterruptedException, ExecutionException, JSONException {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + token);
+        StompSession stompSession = stompClient.connect(WEBSOCKET_URI, new WebSocketHttpHeaders(httpHeaders),
+                new StompSessionHandlerAdapter(){}).get();
+
+        stompSession.subscribe("/user/1/queue/messages", new DefaultStompFrameHandler());
+
+        var msg = new JSONObject()
+                .put("senderId", 2)
+                .put("recipientId", 1)
+                .put("senderName", "SomeName")
+                .put("text", "Hello World!!!");
+
+        stompSession.send("/app/chat", msg.toString().getBytes());
+
+        Assert.assertEquals("Hello World!!!", new JSONObject(blockingQueue.poll(3, SECONDS)).get("text"));
     }
 
     class DefaultStompFrameHandler implements StompFrameHandler {
@@ -103,7 +125,7 @@ public class WebSocketTest {
 
         @Override
         public void handleFrame(StompHeaders stompHeaders, Object o) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + new String((byte[]) o));
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" + new String((byte[]) o));
             blockingQueue.offer(new String((byte[]) o));
         }
     }
