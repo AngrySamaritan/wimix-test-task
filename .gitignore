@@ -33,9 +33,13 @@ build/
 .vscode/
 
 ### DB ###
+<<<<<<< HEAD
 *.db
 
 ### Config ###
 **/application-dev.yaml
 
 
+=======
+*.db
+>>>>>>> 9616bceee6820499ef1cb388dc27e4354f051d7c

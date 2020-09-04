@@ -27,4 +27,5 @@ public class User {
     @Getter
     @Setter
     private Profile profile;
+
 }
