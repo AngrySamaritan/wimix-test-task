@@ -9,6 +9,11 @@
       "name": "jwt.secret",
       "type": "java.lang.String",
       "description": "Secret key for jwt generator."
+    },
+    {
+      "name": "mail.info-sending-rate",
+      "type": "java.lang.String",
+      "description": "Cron expression, which set rule for stats sending via email."
     }
   ]
 }
