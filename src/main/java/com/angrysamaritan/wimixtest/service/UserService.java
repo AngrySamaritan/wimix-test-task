@@ -29,7 +29,7 @@ public class UserService {
 
     public User getUserById(long userId) {
         return userRepo.findById(userId).orElseThrow(
-                () -> HttpClientErrorException.NotFound.create(HttpStatus.NOT_FOUND, "Not found",
+                () -> HttpClientErrorException.NotFound.create(HttpStatus.NOT_FOUND, "User id = " + userId + "Not found",
                         HttpHeaders.EMPTY, null, Charset.defaultCharset())
         );
     }

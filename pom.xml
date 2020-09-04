@@ -167,15 +167,11 @@
             <artifactId>jaxb-core</artifactId>
             <version>2.2.11</version>
         </dependency>
-<<<<<<< HEAD
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
             <version>2.3.3.RELEASE</version>
         </dependency>
-
-=======
->>>>>>> 9616bceee6820499ef1cb388dc27e4354f051d7c
     </dependencies>
     <build>
         <plugins>

@@ -20,10 +20,14 @@ public class SignUpController {
 
     private final SignUpService signUpService;
     private final UserRepo userRepo;
+    private final NotificationService notificationService;
+    private final SimpMessagingTemplate template;
 
-    public SignUpController(SignUpService signUpService, UserRepo userRepo) {
+    public SignUpController(SignUpService signUpService, UserRepo userRepo, NotificationService notificationService, SimpMessagingTemplate template) {
         this.signUpService = signUpService;
         this.userRepo = userRepo;
+        this.notificationService = notificationService;
+        this.template = template;
     }
 
     @PostMapping("/sign_up")

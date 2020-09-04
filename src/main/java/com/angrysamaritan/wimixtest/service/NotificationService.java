@@ -12,7 +12,8 @@ public class NotificationService {
         this.template = template;
     }
 
-    public void sendNotification(String text) {
+    public SimpMessagingTemplate sendNotification(String text) {
         template.convertAndSend("/topic/notifications", text.getBytes());
+        return template;
     }
 }
