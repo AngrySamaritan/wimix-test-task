@@ -29,7 +29,6 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -107,7 +106,7 @@ public class WebSocketTest {
         stompSession.subscribe("/user/1/queue/messages", new DefaultStompFrameHandler());
 
         var msg = new JSONObject()
-                .put("senderId", 2)
+                .put("senderId", 1)
                 .put("recipientId", 1)
                 .put("senderName", "SomeName")
                 .put("text", "Hello World!!!");
@@ -125,7 +124,6 @@ public class WebSocketTest {
 
         @Override
         public void handleFrame(StompHeaders stompHeaders, Object o) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" + new String((byte[]) o));
             blockingQueue.offer(new String((byte[]) o));
         }
     }

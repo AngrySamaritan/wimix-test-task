@@ -1,42 +1,32 @@
 package com.angrysamaritan.wimixtest.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
 
+@Entity
 public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    private long id;
 
+    @ManyToOne
     @Getter
     @Setter
-    private String timestamp;
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
+    @ManyToOne
     @Getter
     @Setter
-    private long senderId;
-
-    @Getter
-    @Setter
-    private long recipientId;
-
-    @Getter
-    @Setter
-    private String senderName;
+    @JoinColumn(name = "recipient_id")
+    private User recipient;
 
     @Getter
     @Setter
     private String text;
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "timestamp=" + timestamp +
-                ", senderId=" + senderId +
-                ", senderName='" + senderName + '\'' +
-                ", text='" + text + '\'' +
-                '}';
-    }
 }
