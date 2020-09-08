@@ -68,7 +68,7 @@ public class LoginControllerTest {
         JSONObject params = new JSONObject();
         params.put("username", "notExistingUsername");
         params.put("password", "anyPassword");
-        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
+        mockMvc.perform(post("/user.login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andExpect(status().is(401));
     }
 
@@ -78,7 +78,7 @@ public class LoginControllerTest {
         JSONObject params = new JSONObject();
         params.put("username", "testUsername");
         params.put("password", "12345");
-        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
+        mockMvc.perform(post("/user.login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andExpect(status().is(200));
     }
 

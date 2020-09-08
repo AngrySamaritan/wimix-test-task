@@ -6,6 +6,8 @@ import com.angrysamaritan.wimixtest.service.UserService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ChatController {
@@ -18,10 +20,16 @@ public class ChatController {
         this.userService = userService;
     }
 
-    @MessageMapping("/chat")
+    @MessageMapping("/chat.sendMessage")
     public void sendSpecific(@Payload MessageDto msg) {
         chatService.saveMessage(msg.getText(), userService.getUserById(msg.getSenderId()),
                 userService.getUserById(msg.getRecipientId()));
         chatService.sendMessage(msg);
+    }
+
+    @ResponseBody
+    @GetMapping("/chat.getMessages")
+    public String getMessages() {
+        return null;
     }
 }
