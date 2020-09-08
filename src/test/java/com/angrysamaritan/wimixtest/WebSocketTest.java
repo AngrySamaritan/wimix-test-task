@@ -5,7 +5,6 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repos.MessageRepo;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.JWTService;
-import com.angrysamaritan.wimixtest.service.NotificationService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -42,7 +41,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class WebSocketTest {
 
     static final String WEBSOCKET_URI = "http://localhost:8080/ws";
-    static final String TOPIC_NOTIFICATIONS = "/topic/notifications";
 
     BlockingQueue<String> blockingQueue = new LinkedBlockingDeque<>();
     private WebSocketStompClient stompClient;
@@ -78,24 +76,6 @@ public class WebSocketTest {
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
         user = userRepo.save(user);
-    }
-
-    @Autowired
-    private NotificationService notificationService;
-
-    @Test
-    public void testSubscribe() throws ExecutionException, InterruptedException {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + token);
-        StompSession stompSession = stompClient.connect(WEBSOCKET_URI, new WebSocketHttpHeaders(httpHeaders),
-                new StompSessionHandlerAdapter(){}).get();
-
-        stompSession.subscribe(TOPIC_NOTIFICATIONS, new DefaultStompFrameHandler());
-
-        stompSession.send("/app/echo", "Testing".getBytes());
-
-        Assert.assertEquals("Test", blockingQueue.poll(3, SECONDS));
-        Assert.assertEquals("Test2", blockingQueue.poll(3, SECONDS));
     }
 
     @Test
