@@ -93,7 +93,7 @@ public class WebSocketTest {
                 .put("senderName", "SomeName")
                 .put("text", "Hello World!!!");
 
-        stompSession.send("/app/chat", msg.toString().getBytes());
+        stompSession.send("/app/chat.sendMessage", msg.toString().getBytes());
 
         Assert.assertEquals("Hello World!!!", new JSONObject(blockingQueue.poll(3, SECONDS)).get("text"));
     }

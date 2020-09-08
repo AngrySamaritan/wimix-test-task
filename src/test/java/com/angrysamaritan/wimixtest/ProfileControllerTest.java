@@ -98,7 +98,7 @@ public class ProfileControllerTest {
         User user = users.get(0);
         JSONObject params = new JSONObject();
         params.put("user_id", user.getId());
-        mockMvc.perform(get("/users").header("Authorization", "Bearer " + token)
+        mockMvc.perform(get("/users.getById").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andExpect(content().json(userService.getProfile(user.getId()).toString()));
     }
@@ -109,13 +109,13 @@ public class ProfileControllerTest {
         params.put("first_name", "A");
         params.put("page", "0");
         params.put("size", "2");
-        MvcResult result = mockMvc.perform(get("/users").header("Authorization", "Bearer " + token)
+        MvcResult result = mockMvc.perform(get("/users.getByName").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString())).andReturn();
         JSONArray users = new JSONArray(result.getResponse().getContentAsString());
         Assert.assertEquals(2, users.length());
 
         params.put("size", "1");
-        result = mockMvc.perform(get("/users").header("Authorization", "Bearer " + token)
+        result = mockMvc.perform(get("/users.getByName").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString())).andReturn();
         users = new JSONArray(result.getResponse().getContentAsString());
         Assert.assertEquals(1, users.length());
@@ -123,7 +123,7 @@ public class ProfileControllerTest {
 
     @Test
     public void deleteProfile() throws Exception {
-        mockMvc.perform(delete("/users")
+        mockMvc.perform(delete("/users.deleteProfile")
                 .header("Authorization", "Bearer " + token));
         JSONObject profile = userService.getProfile(users.get(0).getId());
         Assert.assertFalse(profile.has("profile"));

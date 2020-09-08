@@ -33,7 +33,7 @@ public class SignUpControllerTest {
         params.put("first_name", "A");
         params.put("last_name", null);
 
-        mockMvc.perform(post("/sign_up")
+        mockMvc.perform(post("/user.sign_up")
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andDo(print())
                 .andExpect(content().json("errors", false));
@@ -49,7 +49,7 @@ public class SignUpControllerTest {
         params.put("first_name", "A");
         params.put("last_name", "Test");
 
-        mockMvc.perform(post("/sign_up")
+        mockMvc.perform(post("/user.sign_up")
                 .contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andDo(print())
                 .andExpect(status().is(200));

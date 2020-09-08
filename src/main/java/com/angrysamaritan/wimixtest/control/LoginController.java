@@ -30,7 +30,7 @@ public class LoginController {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user.login")
     public String login(@RequestBody JWTRequest authenticationRequest) throws JSONException {
         String username = authenticationRequest.getUsername();
         authenticate(username, authenticationRequest.getPassword());

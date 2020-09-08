@@ -3,7 +3,6 @@ package com.angrysamaritan.wimixtest.control;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.model.UserDto;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
-import com.angrysamaritan.wimixtest.service.NotificationService;
 import com.angrysamaritan.wimixtest.service.SignUpService;
 import org.hibernate.HibernateException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -20,17 +19,15 @@ public class SignUpController {
 
     private final SignUpService signUpService;
     private final UserRepo userRepo;
-    private final NotificationService notificationService;
     private final SimpMessagingTemplate template;
 
-    public SignUpController(SignUpService signUpService, UserRepo userRepo, NotificationService notificationService, SimpMessagingTemplate template) {
+    public SignUpController(SignUpService signUpService, UserRepo userRepo, SimpMessagingTemplate template) {
         this.signUpService = signUpService;
         this.userRepo = userRepo;
-        this.notificationService = notificationService;
         this.template = template;
     }
 
-    @PostMapping("/sign_up")
+    @PostMapping("/user.sign_up")
     public String users(@Valid @RequestBody UserDto userDto, Errors errors) throws Exception {
         JSONObject response = new JSONObject();
         if (errors.hasErrors()) {
