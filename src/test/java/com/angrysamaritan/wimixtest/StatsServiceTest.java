@@ -1,5 +1,6 @@
 package com.angrysamaritan.wimixtest;
 
+import com.angrysamaritan.wimixtest.control.StatsController;
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
@@ -16,10 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.mail.MessagingException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -62,6 +66,17 @@ public class StatsServiceTest {
                 user, Date.valueOf(LocalDate.now().minusDays(2)), Date.valueOf(LocalDate.now())));
         Assert.assertEquals(1, statsService.getMessagesAmountByPeriod(
                 user, Date.valueOf(LocalDate.now().minusDays(2)), Date.valueOf(LocalDate.now().minusDays(1))));
+    }
+
+    @Autowired
+    StatsController statsController;
+
+    @Test
+    public void statsControllerTest() throws MessagingException {
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("name", "Beautiful name");
+        templateModel.put("text", "Here Is Text");
+        statsController.sendStatsMessage("madcat11072001@gmail.com", "Test", templateModel);
     }
 
 
