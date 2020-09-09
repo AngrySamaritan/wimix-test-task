@@ -7,6 +7,8 @@ import com.angrysamaritan.wimixtest.repos.MessageRepo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -34,6 +36,7 @@ public class ChatService {
         message.setRecipient(recipient);
         message.setSender(sender);
         message.setText(text);
+        message.setDate(Date.valueOf(LocalDate.now()));
         messageRepo.save(message);
     }
 }

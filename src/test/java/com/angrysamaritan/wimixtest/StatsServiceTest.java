@@ -5,6 +5,7 @@ import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repos.MessageRepo;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.service.StatsService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,13 +53,15 @@ public class StatsServiceTest {
         messages.add(messageRepo.save(message));
     }
 
+    @Autowired
+    StatsService statsService;
+
     @Test
-    public void testSelectMessages() {
-        List<Message> result = messageRepo.getSentMessagesOfUser(user.getId(),
-                Date.valueOf(LocalDate.now().minusDays(2)), Date.valueOf(LocalDate.now()));
-        result.addAll(messageRepo.getReceivedMessagesOfUserByPeriod(user.getId(), Date.valueOf(LocalDate.now().minusDays(2)),
-                Date.valueOf(LocalDate.now())));
-        Assert.assertEquals(2, result.size());
+    public void testGetMessagesByPeriod() {
+        Assert.assertEquals(2, statsService.getMessagesAmountByPeriod(
+                user, Date.valueOf(LocalDate.now().minusDays(2)), Date.valueOf(LocalDate.now())));
+        Assert.assertEquals(1, statsService.getMessagesAmountByPeriod(
+                user, Date.valueOf(LocalDate.now().minusDays(2)), Date.valueOf(LocalDate.now().minusDays(1))));
     }
 
 

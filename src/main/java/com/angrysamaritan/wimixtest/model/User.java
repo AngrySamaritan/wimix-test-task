@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -23,8 +24,7 @@ public class User {
     @Setter
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     @Getter
     @Setter
     private Profile profile;
@@ -38,4 +38,8 @@ public class User {
     @Getter
     @Setter
     private List<Message> receivedMessages;
+
+    @Getter
+    @Setter
+    private Date registrationDate;
 }
