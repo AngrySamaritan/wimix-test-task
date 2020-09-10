@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <style type="text/css">
+        th, td {
+            border: black 1px solid;
+        }
+    </style>
 </head>
 <body>
-<h5 th:text="'Hello, ' + ${name}"></h5>
-<h6 th:text="${text}"></h6>
+<h1 th:text="'Stats report'"></h1>
+<hr>
+<p th:text="'Hello, ' + ${name}"></p>
+<p th:text="'Here is your sats report:'"></p>
+<!--/*@thymesVar id="registeredAmount" type="long"*/-->
+<h3 th:text="'Registered users amount:' + ${registeredAmount}"></h3>
+<h3>The most communicative users</h3>
+<table style="border: black 1px solid; border-collapse: collapse">
+    <thead>
+        <tr style="background: bisque">
+            <th th:text="'#'"></th>
+            <th th:text="'Username'"></th>
+            <th th:text="'First Name'"></th>
+            <th th:text="'Last Name'"></th>
+        </tr>
+    </thead>
+    <!--/*@thymesVar id="theMostCommunicativeUsers" type="java.util.List<com.angrysamaritan.wimixtest.model.User>"*/-->
+    <tbody>
+        <tr th:each="user, stat: ${theMostCommunicativeUsers}">
+            <td th:text="${stat.count}"></td>
+            <td th:text="${user.getUsername()}"></td>
+            <td th:text="${user.getProfile().getFirstName()}"></td>
+            <td th:text="${user.getProfile().getLastName()}"></td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

@@ -26,8 +26,7 @@ public class Profile {
     @Setter
     private String email;
 
-    @OneToOne()
-    @JoinColumn(name = "userId")
+    @OneToOne(mappedBy = "profile")
     @Getter
     @Setter
     private User user;

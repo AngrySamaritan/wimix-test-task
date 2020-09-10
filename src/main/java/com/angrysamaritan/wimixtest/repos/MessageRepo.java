@@ -11,9 +11,7 @@ import java.util.List;
 @Repository
 public interface MessageRepo extends CrudRepository<Message, Long> {
 
-    @Query("SELECT m FROM Message m JOIN m.sender s ON s.id = :userId WHERE m.date BETWEEN :startDate AND :endDate")
-    List<Message> getSentMessagesOfUser(long userId, Date startDate, Date endDate);
-
-    @Query("SELECT m FROM Message m JOIN m.recipient r ON r.id = :userId WHERE m.date BETWEEN :startDate AND :endDate")
-    List<Message> getReceivedMessagesOfUserByPeriod(long userId, Date startDate, Date endDate);
+    @Query(value = "SELECT * FROM message m WHERE (m.sender_id = :userId OR m.recipient_id = :userId) AND m.date" +
+            " BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<Message> getMessagesOfUserByPeriod(long userId, Date startDate, Date endDate);
 }
