@@ -67,31 +67,6 @@ public class UserService {
         return userRepo.getUserByUsername(username);
     }
 
-    public User patchCurrentProfile(ProfileDto profileDto) {
-        User user = getCurrentUser();
-        if (user.getProfile() == null) {
-            user.setProfile(new Profile());
-        }
-
-        String email = profileDto.getEmail();
-        if (email != null) {
-            user.getProfile().setEmail(email);
-        }
-        String firstName = profileDto.getFirstName();
-        if (firstName != null) {
-            if (firstName.length() > 0) {
-                user.getProfile().setFirstName(firstName);
-            }
-        }
-        String lastName = profileDto.getLastName();
-        if (lastName != null) {
-            if (lastName.length() > 0) {
-                user.getProfile().setLastName(lastName);
-            }
-        }
-        return user;
-    }
-
 
     public User deleteCurrentProfile() {
         User user = getCurrentUser();

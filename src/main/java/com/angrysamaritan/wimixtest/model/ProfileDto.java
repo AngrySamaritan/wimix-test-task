@@ -16,12 +16,10 @@ public class ProfileDto {
     @Getter
     @Setter
     @JsonProperty("first_name")
-    @NotBlank
     private String firstName;
 
     @Getter
     @Setter
     @JsonProperty("last_name")
-    @NotBlank
     private String lastName;
 }

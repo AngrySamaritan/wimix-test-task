@@ -1,24 +1,37 @@
 package com.angrysamaritan.wimixtest.control;
 
+import com.angrysamaritan.wimixtest.exceptions.BlankProfileFieldException;
 import com.angrysamaritan.wimixtest.model.ProfileDto;
+import com.angrysamaritan.wimixtest.service.ProfileService;
 import com.angrysamaritan.wimixtest.service.UserService;
+import com.angrysamaritan.wimixtest.service.ValidationService;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.nio.charset.Charset;
+import java.util.Set;
 
 @RestController
 public class ProfileController {
 
     private final UserService userService;
+    private final Validator validator;
+    private final ValidationService validationService;
+    private final ProfileService profileService;
 
-    public ProfileController(UserService userService) {
+    public ProfileController(UserService userService, Validator validator, ValidationService validationService, ProfileService profileService) {
         this.userService = userService;
+        this.validator = validator;
+        this.validationService = validationService;
+        this.profileService = profileService;
     }
 
     @GetMapping("/users.getById")
@@ -33,7 +46,7 @@ public class ProfileController {
     }
 
     @GetMapping("/users.getByName")
-    public String getUsersByName(@RequestBody String params) throws Exception {
+    public String getUsersByName(@RequestBody String params) {
         try {
             JSONObject paramsJson = new JSONObject(params);
             return userService.getProfilesByFirstName(paramsJson.getString("first_name"),
@@ -45,8 +58,22 @@ public class ProfileController {
     }
 
     @PatchMapping("/users.patchProfile")
-    public String patchUsers(@RequestBody @Valid ProfileDto profileDto) throws JSONException {
-        return new JSONObject().put("user_id", userService.patchCurrentProfile(profileDto).getId()).toString();
+    public ResponseEntity<String> patchUsers(@RequestBody ProfileDto profileDto) throws Exception {
+        Set<ConstraintViolation<ProfileDto>> errors = validator.validate(profileDto);
+        JSONObject response = new JSONObject();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        if (errors.size() != 0) {
+            response.put("errors", validationService.processErrors(errors));
+        } else {
+            try {
+                response = new JSONObject().put("user_id", profileService.createOrUpdateProfile(
+                        userService.getCurrentUser(), profileDto).getId());
+                status = HttpStatus.OK;
+            } catch (BlankProfileFieldException e) {
+                response.put("errors", new JSONObject().put("global", new JSONArray().put(e.getMessage())));
+            }
+        }
+        return new ResponseEntity<>(response.toString(), status);
     }
 
     @DeleteMapping("/users.deleteProfile")
