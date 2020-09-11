@@ -4,42 +4,51 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.model.UserDto;
 import com.angrysamaritan.wimixtest.repos.UserRepo;
 import com.angrysamaritan.wimixtest.service.SignUpService;
-import org.hibernate.HibernateException;
+import com.angrysamaritan.wimixtest.service.ValidationService;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.validation.Errors;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
 
 @RestController
 public class SignUpController {
 
     private final SignUpService signUpService;
     private final UserRepo userRepo;
-    private final SimpMessagingTemplate template;
+    private final Validator validator;
+    private final ValidationService validationService;
 
-    public SignUpController(SignUpService signUpService, UserRepo userRepo, SimpMessagingTemplate template) {
+    public SignUpController(SignUpService signUpService, UserRepo userRepo, Validator validator,
+                            ValidationService validationService) {
         this.signUpService = signUpService;
         this.userRepo = userRepo;
-        this.template = template;
+        this.validator = validator;
+        this.validationService = validationService;
     }
 
     @PostMapping("/user.sign_up")
-    public String users(@Valid @RequestBody UserDto userDto, Errors errors) throws Exception {
+    public ResponseEntity<String> users(@RequestBody UserDto userDto) throws Exception {
+        Set<ConstraintViolation<UserDto>> errors = validator.validate(userDto);
+        var status = HttpStatus.BAD_REQUEST;
         JSONObject response = new JSONObject();
-        if (errors.hasErrors()) {
-            response.put("errors", signUpService.processErrors(errors));
+        if (errors.size() != 0) {
+            response.put("errors", validationService.processErrors(errors));
         } else {
             try {
                 User user = userRepo.save(signUpService.signIn(userDto));
                 response.put("user_id", user.getId());
-            } catch (HibernateException e) {
+                status = HttpStatus.OK;
+            } catch (DataIntegrityViolationException e) {
                 response.put("errors", new JSONObject().put("username", "Username exist"));
             }
         }
-        return response.toString();
+        return new ResponseEntity<>(response.toString(), status);
     }
 }

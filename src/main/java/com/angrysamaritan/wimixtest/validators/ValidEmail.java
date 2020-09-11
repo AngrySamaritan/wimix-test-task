@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = EmailValidator.class)
 public @interface ValidEmail {
     String message() default "Wrong email format";
-    Class<?>[] group() default {};
+    Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
