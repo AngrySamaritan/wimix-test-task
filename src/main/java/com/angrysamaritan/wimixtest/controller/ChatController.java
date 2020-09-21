@@ -20,7 +20,7 @@ public class ChatController {
         this.userService = userService;
     }
 
-    @MessageMapping("/chat.sendMessage")
+    @MessageMapping("/sendMessage")
     public void sendSpecific(@Payload MessageDto msg) {
         chatService.saveMessage(msg.getText(), userService.getUserById(msg.getSenderId()),
                 userService.getUserById(msg.getRecipientId()));

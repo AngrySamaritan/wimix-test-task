@@ -6,6 +6,7 @@ import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import org.json.JSONObject;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,9 @@ public class LoginControllerTest {
     private JWTService jwtService;
 
     @Autowired
+    BCryptPasswordEncoder encoder;
+
+    @Autowired
     private UserRepository userRepository;
 
     private User user;
@@ -52,7 +56,6 @@ public class LoginControllerTest {
     }
 
     public void addUser() {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user = new User();
         user.setProfile(new Profile());
         user.getProfile().setEmail("test@mail.test");
@@ -68,7 +71,7 @@ public class LoginControllerTest {
         JSONObject params = new JSONObject();
         params.put("username", "notExistingUsername");
         params.put("password", "anyPassword");
-        mockMvc.perform(post("/user.login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
+        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
                 .andExpect(status().is(401));
     }
 
@@ -76,10 +79,11 @@ public class LoginControllerTest {
     public void loginSuccessful() throws Exception {
 
         JSONObject params = new JSONObject();
-        params.put("username", "testUsername");
+        params.put("username", "TestUsername");
         params.put("password", "12345");
-        mockMvc.perform(post("/user.login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
-                .andExpect(status().is(200));
+        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(params.toString()))
+                .andExpect(status().is(200)).andExpect(
+                mvcResult -> Assert.assertNotNull(mvcResult.getResponse().getContentAsString()));
     }
 
     @Test
