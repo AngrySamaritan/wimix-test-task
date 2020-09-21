@@ -2,8 +2,8 @@ package com.angrysamaritan.wimixtest.service;
 
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.MessageRepo;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.MessageRepository;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -15,12 +15,12 @@ import java.util.Map;
 @Service
 public class StatsService {
 
-    private final UserRepo userRepo;
-    private final MessageRepo messageRepo;
+    private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
-    public StatsService(UserRepo userRepo, MessageRepo messageRepo) {
-        this.userRepo = userRepo;
-        this.messageRepo = messageRepo;
+    public StatsService(UserRepository userRepository, MessageRepository messageRepository) {
+        this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
     }
 
     public Map<String, Object> getStatsMap(Date startDate, Date endDate) {
@@ -33,7 +33,7 @@ public class StatsService {
     }
 
     private List<User> getTheMostCommunicativeUsers(Date startDate, Date endDate) {
-        List<User> users = userRepo.findAll();
+        List<User> users = userRepository.findAll();
         try {
             if (users.size() == 0) {
                 return null;
@@ -58,12 +58,12 @@ public class StatsService {
     }
 
     public long getMessagesAmountByPeriod(User user, Date startDate, Date endDate) {
-        List<Message> result = messageRepo.getMessagesOfUserByPeriod(user.getId(), startDate, endDate);
+        List<Message> result = messageRepository.getMessagesOfUserByPeriod(user.getId(), startDate, endDate);
         return result.size();
     }
 
     public long getRegisteredUsersAmountByPeriod(Date startDate, Date endDate) {
-        return userRepo.getRegisteredUsersByPeriod(startDate, endDate).size();
+        return userRepository.getRegisteredUsersByPeriod(startDate, endDate).size();
     }
 
 }

@@ -1,9 +1,10 @@
 create table user
 (
-    id       bigint auto_increment
+    id                bigint auto_increment
         primary key,
-    password varchar(255) null,
-    username varchar(255) null,
+    password          varchar(255) null,
+    registration_date date         null,
+    username          varchar(255) null,
     constraint UK_sb8bbouer5wak8vyiiy4pf2bx
         unique (username)
 );
@@ -25,6 +26,7 @@ create table message
 (
     id           bigint auto_increment
         primary key,
+    date         date         null,
     text         varchar(255) null,
     recipient_id bigint       null,
     sender_id    bigint       null,

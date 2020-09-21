@@ -2,8 +2,8 @@ package com.angrysamaritan.wimixtest;
 
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.MessageRepo;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.MessageRepository;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +51,7 @@ public class WebSocketTest {
     @Autowired
     private JWTService jwtService;
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @Before
     public void prepare() {
@@ -75,7 +75,7 @@ public class WebSocketTest {
         user.getProfile().setFirstName("A");
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
-        user = userRepo.save(user);
+        user = userRepository.save(user);
     }
 
     @Test
@@ -111,11 +111,11 @@ public class WebSocketTest {
     }
 
     @Autowired
-    private MessageRepo messageRepo;
+    private MessageRepository messageRepository;
 
     @After
     public void deleteUser() {
-        messageRepo.deleteAll();
-        userRepo.delete(user);
+        messageRepository.deleteAll();
+        userRepository.delete(user);
     }
 }

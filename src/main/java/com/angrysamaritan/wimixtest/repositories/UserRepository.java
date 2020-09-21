@@ -1,5 +1,4 @@
-package com.angrysamaritan.wimixtest.repos;
-import com.angrysamaritan.wimixtest.model.Message;
+package com.angrysamaritan.wimixtest.repositories;
 import com.angrysamaritan.wimixtest.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,7 @@ import java.util.List;
 
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u join u.profile p where p.firstName = :firstName")
     Page<User> getUsersByFirstName(String firstName, Pageable pageable);

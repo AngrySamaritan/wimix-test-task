@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.service;
 
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +12,15 @@ import java.util.ArrayList;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        com.angrysamaritan.wimixtest.model.User user = userRepo.getUserByUsername(s);
+        com.angrysamaritan.wimixtest.model.User user = userRepository.getUserByUsername(s);
         return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 

@@ -2,7 +2,7 @@ package com.angrysamaritan.wimixtest;
 
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.UserService;
 import org.junit.After;
@@ -42,7 +42,7 @@ public class ProfileControllerTest {
     private JWTService jwtService;
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -71,7 +71,7 @@ public class ProfileControllerTest {
         user.getProfile().setFirstName("A");
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
-        user = userRepo.save(user);
+        user = userRepository.save(user);
         users.add(user);
         user = new User();
         user.setProfile(new Profile());
@@ -80,7 +80,7 @@ public class ProfileControllerTest {
         user.getProfile().setFirstName("A");
         user.getProfile().setLastName("AS");
         user.setPassword(encoder.encode("12345"));
-        user = userRepo.save(user);
+        user = userRepository.save(user);
         users.add(user);
         user = new User();
         user.setProfile(new Profile());
@@ -89,7 +89,7 @@ public class ProfileControllerTest {
         user.getProfile().setFirstName("TRA");
         user.getProfile().setLastName("RA");
         user.setPassword(encoder.encode("12345"));
-        user = userRepo.save(user);
+        user = userRepository.save(user);
         users.add(user);
     }
 
@@ -133,7 +133,7 @@ public class ProfileControllerTest {
     @After
     public void deleteUser() {
         for (User user : users) {
-            userRepo.delete(user);
+            userRepository.delete(user);
         }
     }
 

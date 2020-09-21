@@ -1,8 +1,8 @@
-package com.angrysamaritan.wimixtest.control;
+package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.model.UserDto;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.SignUpService;
 import com.angrysamaritan.wimixtest.service.ValidationService;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -21,14 +21,14 @@ import java.util.Set;
 public class SignUpController {
 
     private final SignUpService signUpService;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final Validator validator;
     private final ValidationService validationService;
 
-    public SignUpController(SignUpService signUpService, UserRepo userRepo, Validator validator,
+    public SignUpController(SignUpService signUpService, UserRepository userRepository, Validator validator,
                             ValidationService validationService) {
         this.signUpService = signUpService;
-        this.userRepo = userRepo;
+        this.userRepository = userRepository;
         this.validator = validator;
         this.validationService = validationService;
     }
@@ -42,7 +42,7 @@ public class SignUpController {
             response.put("errors", validationService.processErrors(errors));
         } else {
             try {
-                User user = userRepo.save(signUpService.signIn(userDto));
+                User user = userRepository.save(signUpService.signIn(userDto));
                 response.put("user_id", user.getId());
                 status = HttpStatus.OK;
             } catch (DataIntegrityViolationException e) {

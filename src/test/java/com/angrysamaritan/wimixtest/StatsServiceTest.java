@@ -1,11 +1,11 @@
 package com.angrysamaritan.wimixtest;
 
-import com.angrysamaritan.wimixtest.control.StatsController;
+import com.angrysamaritan.wimixtest.controller.StatsController;
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.MessageRepo;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.MessageRepository;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.StatsService;
 import org.json.JSONObject;
@@ -44,12 +44,12 @@ public class StatsServiceTest {
     private MockMvc mockMvc;
 
     @Autowired
-    UserRepo userRepo;
+    UserRepository userRepository;
 
     private final List<Message> messages = new LinkedList<>();
 
     @Autowired
-    MessageRepo messageRepo;
+    MessageRepository messageRepository;
 
     @Before
     public void prepare() {
@@ -61,7 +61,7 @@ public class StatsServiceTest {
         user.getProfile().setFirstName("Andrei");
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
-        users.add(userRepo.save(user));
+        users.add(userRepository.save(user));
 
         user = new User();
         user.setProfile(new Profile());
@@ -70,7 +70,7 @@ public class StatsServiceTest {
         user.getProfile().setFirstName("B");
         user.getProfile().setLastName("B");
         user.setPassword(encoder.encode("12345"));
-        users.add(userRepo.save(user));
+        users.add(userRepository.save(user));
 
 
         user = new User();
@@ -80,7 +80,7 @@ public class StatsServiceTest {
         user.getProfile().setFirstName("A");
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
-        users.add(userRepo.save(user));
+        users.add(userRepository.save(user));
 
 
         user = new User();
@@ -90,18 +90,18 @@ public class StatsServiceTest {
         user.getProfile().setFirstName("A");
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
-        users.add(userRepo.save(user));
+        users.add(userRepository.save(user));
 
 
         Message message = Message.builder().date(Date.valueOf(LocalDate.now().minusDays(1)))
                 .recipient(users.get(0)).sender(users.get(2)).text("Msg0").build();
-        messages.add(messageRepo.save(message));
+        messages.add(messageRepository.save(message));
         message = Message.builder().date(Date.valueOf(LocalDate.now()))
                 .recipient(users.get(2)).sender(users.get(0)).text("Msg2").build();
-        messages.add(messageRepo.save(message));
+        messages.add(messageRepository.save(message));
         message = Message.builder().date(Date.valueOf(LocalDate.now()))
                 .recipient(users.get(2)).sender(users.get(0)).text("Msg3").build();
-        messages.add(messageRepo.save(message));
+        messages.add(messageRepository.save(message));
 
         generateToken();
     }
@@ -135,7 +135,7 @@ public class StatsServiceTest {
     @Test
     public void statsControllerTest() throws Exception {
         var params = new JSONObject();
-        assert userRepo.findById(users.get(0).getId()).orElseThrow().getProfile() != null;
+        assert userRepository.findById(users.get(0).getId()).orElseThrow().getProfile() != null;
         params.put("start_date", Date.valueOf(LocalDate.now().minusDays(2).toString()));
         params.put("end_date", Date.valueOf(LocalDate.now().toString()));
         MvcResult result = mockMvc.perform(post("/stats.sendMail").header("Authorization", "Bearer " + token)
@@ -147,8 +147,8 @@ public class StatsServiceTest {
 
     @After
     public void deleteAll() {
-        messageRepo.deleteAll(messages);
-        userRepo.deleteAll(users);
+        messageRepository.deleteAll(messages);
+        userRepository.deleteAll(users);
     }
 
 

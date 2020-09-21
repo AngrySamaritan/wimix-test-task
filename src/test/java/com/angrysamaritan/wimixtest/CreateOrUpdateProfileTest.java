@@ -1,7 +1,7 @@
 package com.angrysamaritan.wimixtest;
 
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.UserDetailsServiceImpl;
 import org.junit.After;
@@ -38,14 +38,14 @@ public class CreateOrUpdateProfileTest {
 
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     private void createUser() {
         user = new User();
         user.setProfile(null);
         user.setUsername("Andrei1");
         user.setPassword(new BCryptPasswordEncoder().encode("12345"));
-        user = userRepo.save(user);
+        user = userRepository.save(user);
     }
 
     @Autowired
@@ -112,7 +112,7 @@ public class CreateOrUpdateProfileTest {
 
     @After
     public void after() {
-        userRepo.delete(user);
+        userRepository.delete(user);
     }
 
 }

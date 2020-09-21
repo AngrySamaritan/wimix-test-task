@@ -2,7 +2,7 @@ package com.angrysamaritan.wimixtest;
 
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import org.json.JSONObject;
 import org.junit.After;
@@ -35,7 +35,7 @@ public class LoginControllerTest {
     private JWTService jwtService;
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     private User user;
     private String token;
@@ -60,7 +60,7 @@ public class LoginControllerTest {
         user.getProfile().setFirstName("A");
         user.getProfile().setLastName("A");
         user.setPassword(encoder.encode("12345"));
-        user = userRepo.save(user);
+        user = userRepository.save(user);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class LoginControllerTest {
 
     @After
     public void deleteUser() {
-        userRepo.delete(user);
+        userRepository.delete(user);
     }
 
 }

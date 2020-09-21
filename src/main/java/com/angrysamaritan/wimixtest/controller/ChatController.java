@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.control;
+package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.model.MessageDto;
 import com.angrysamaritan.wimixtest.service.ChatService;
@@ -25,11 +25,5 @@ public class ChatController {
         chatService.saveMessage(msg.getText(), userService.getUserById(msg.getSenderId()),
                 userService.getUserById(msg.getRecipientId()));
         chatService.sendMessage(msg);
-    }
-
-    @ResponseBody
-    @GetMapping("/chat.getMessages")
-    public String getMessages() {
-        return null;
     }
 }

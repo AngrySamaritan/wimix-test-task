@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.control;
+package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.exceptions.BlankProfileFieldException;
 import com.angrysamaritan.wimixtest.model.ProfileDto;

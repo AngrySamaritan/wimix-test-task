@@ -1,10 +1,9 @@
 package com.angrysamaritan.wimixtest.service;
 
 import com.angrysamaritan.wimixtest.model.Profile;
-import com.angrysamaritan.wimixtest.model.ProfileDto;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.ProfileRepo;
-import com.angrysamaritan.wimixtest.repos.UserRepo;
+import com.angrysamaritan.wimixtest.repositories.ProfileRepository;
+import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -22,16 +21,16 @@ import java.util.Collections;
 @Service
 public class UserService {
 
-    private final UserRepo userRepo;
-    private final ProfileRepo profileRepo;
+    private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
-    public UserService(UserRepo userRepo, ProfileRepo profileRepo) {
-        this.userRepo = userRepo;
-        this.profileRepo = profileRepo;
+    public UserService(UserRepository userRepository, ProfileRepository profileRepository) {
+        this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
     public User getUserById(long userId) {
-        return userRepo.findById(userId).orElseThrow(
+        return userRepository.findById(userId).orElseThrow(
                 () -> HttpClientErrorException.NotFound.create(HttpStatus.NOT_FOUND, "User id = " + userId + "Not found",
                         HttpHeaders.EMPTY, null, Charset.defaultCharset())
         );
@@ -42,7 +41,7 @@ public class UserService {
     }
 
     public JSONArray getProfilesByFirstName(String firstName, int page, int size) throws JSONException {
-        Page<User> users = userRepo.getUsersByFirstName(firstName, PageRequest.of(page, size));
+        Page<User> users = userRepository.getUsersByFirstName(firstName, PageRequest.of(page, size));
         return profilesToJson(users);
     }
 
@@ -64,7 +63,7 @@ public class UserService {
 
     public User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepo.getUserByUsername(username);
+        return userRepository.getUserByUsername(username);
     }
 
 
@@ -72,8 +71,8 @@ public class UserService {
         User user = getCurrentUser();
         Profile profile = user.getProfile();
         user.setProfile(null);
-        user = userRepo.save(user);
-        profileRepo.delete(profile);
+        user = userRepository.save(user);
+        profileRepository.delete(profile);
         return user;
     }
 }

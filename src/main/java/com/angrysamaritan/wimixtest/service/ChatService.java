@@ -3,7 +3,7 @@ package com.angrysamaritan.wimixtest.service;
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.model.MessageDto;
 import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.repos.MessageRepo;
+import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 public class ChatService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final MessageRepo messageRepo;
+    private final MessageRepository messageRepository;
 
-    public ChatService(SimpMessagingTemplate simpMessagingTemplate, MessageRepo messageRepo) {
+    public ChatService(SimpMessagingTemplate simpMessagingTemplate, MessageRepository messageRepository) {
         this.simpMessagingTemplate = simpMessagingTemplate;
-        this.messageRepo = messageRepo;
+        this.messageRepository = messageRepository;
     }
 
     public void sendMessage(MessageDto msg) {
@@ -37,6 +37,6 @@ public class ChatService {
         message.setSender(sender);
         message.setText(text);
         message.setDate(Date.valueOf(LocalDate.now()));
-        messageRepo.save(message);
+        messageRepository.save(message);
     }
 }
