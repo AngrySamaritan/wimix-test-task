@@ -1,5 +1,6 @@
 package com.angrysamaritan.wimixtest;
 
+import com.angrysamaritan.wimixtest.DTO.UserDto;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
@@ -97,26 +98,25 @@ public class ProfileControllerTest {
     public void getProfileById() throws Exception {
         User user = users.get(0);
         JSONObject params = new JSONObject();
-        params.put("user_id", user.getId());
-        mockMvc.perform(get("/users.getById").header("Authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON).content(params.toString()))
+
+        mockMvc.perform(get("/users").header("Authorization", "Bearer " + token)
+                .param("user_id", String.valueOf(user.getId())))
                 .andExpect(content().json(userService.getProfile(user.getId()).toString()));
     }
 
     @Test
     public void getByNameTest() throws Exception {
-        JSONObject params = new JSONObject();
-        params.put("first_name", "A");
-        params.put("page", "0");
-        params.put("size", "2");
         MvcResult result = mockMvc.perform(get("/users.getByName").header("Authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON).content(params.toString())).andReturn();
+                .param("first_name", "A")
+                .param("page", "0")
+                .param("size", "2")).andReturn();
         JSONArray users = new JSONArray(result.getResponse().getContentAsString());
         Assert.assertEquals(2, users.length());
 
-        params.put("size", "1");
-        result = mockMvc.perform(get("/users.getByName").header("Authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON).content(params.toString())).andReturn();
+        result = mockMvc.perform(get("/users").header("Authorization", "Bearer " + token)
+                .param("first_name", "A")
+                .param("page", "0")
+                .param("size", "1")).andReturn();
         users = new JSONArray(result.getResponse().getContentAsString());
         Assert.assertEquals(1, users.length());
     }
@@ -125,8 +125,8 @@ public class ProfileControllerTest {
     public void deleteProfile() throws Exception {
         mockMvc.perform(delete("/users.deleteProfile")
                 .header("Authorization", "Bearer " + token));
-        JSONObject profile = userService.getProfile(users.get(0).getId());
-        Assert.assertFalse(profile.has("profile"));
+        UserDto.Response.Profile profile = userService.getProfile(users.get(0).getId());
+        Assert.assertNull(profile.getEmail());
     }
 
 

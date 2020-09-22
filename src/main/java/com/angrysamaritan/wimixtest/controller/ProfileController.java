@@ -1,82 +1,71 @@
 package com.angrysamaritan.wimixtest.controller;
 
-import com.angrysamaritan.wimixtest.exceptions.BlankProfileFieldException;
-import com.angrysamaritan.wimixtest.model.ProfileDto;
+import com.angrysamaritan.wimixtest.DTO.UserDto;
 import com.angrysamaritan.wimixtest.service.ProfileService;
 import com.angrysamaritan.wimixtest.service.UserService;
-import com.angrysamaritan.wimixtest.service.ValidationService;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
+import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
+import javassist.NotFoundException;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
-import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import javax.validation.Validator;
-import java.nio.charset.Charset;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 public class ProfileController {
 
     private final UserService userService;
     private final Validator validator;
-    private final ValidationService validationService;
+    private final ErrorsUtil errorsUtil;
     private final ProfileService profileService;
 
-    public ProfileController(UserService userService, Validator validator, ValidationService validationService, ProfileService profileService) {
+    public ProfileController(UserService userService, Validator validator, ErrorsUtil errorsUtil, ProfileService profileService) {
         this.userService = userService;
         this.validator = validator;
-        this.validationService = validationService;
+        this.errorsUtil = errorsUtil;
         this.profileService = profileService;
     }
 
-    @GetMapping("/users.getById")
-    public String getUsersById(@RequestBody String params) throws Exception {
-        try {
-            JSONObject paramsJson = new JSONObject(params);
-            return userService.getProfile(paramsJson.getLong("user_id")).toString();
-        } catch (JSONException e) {
-            throw HttpClientErrorException.BadRequest.create(HttpStatus.BAD_REQUEST,
-                    "Not all required params found", HttpHeaders.EMPTY, null, Charset.defaultCharset());
-        }
+    @GetMapping(value = "/profiles", params = "id")
+    public UserDto.Response.Profile getUsersById(@RequestParam("id") long id) {
+        return userService.getProfile(id);
     }
 
-    @GetMapping("/users.getByName")
-    public String getUsersByName(@RequestBody String params) {
-        try {
-            JSONObject paramsJson = new JSONObject(params);
-            return userService.getProfilesByFirstName(paramsJson.getString("first_name"),
-                    paramsJson.getInt("page"), paramsJson.getInt("size")).toString();
-        } catch (JSONException e) {
-            throw HttpClientErrorException.BadRequest.create(HttpStatus.BAD_REQUEST,
-                    "Not all required params found", HttpHeaders.EMPTY, null, Charset.defaultCharset());
-        }
+    @GetMapping(value = "/profiles", params = {"first_name", "page", "size"})
+    public List<UserDto.Response.Profile> getUsersByName(@RequestParam("first_name") String firstName,
+                                                         @RequestParam("page") int page,
+                                                         @RequestParam("size") int size) {
+        return userService.getProfilesByFirstName(firstName, page, size);
     }
 
-    @PatchMapping("/users.patchProfile")
-    public ResponseEntity<String> patchUsers(@RequestBody ProfileDto profileDto) throws Exception {
-        Set<ConstraintViolation<ProfileDto>> errors = validator.validate(profileDto);
-        JSONObject response = new JSONObject();
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        if (errors.size() != 0) {
-            response.put("errors", validationService.processErrors(errors));
+    @PostMapping("/profiles")
+    public ResponseEntity<Object> createProfile(@ModelAttribute @Valid UserDto.Request.CreateProfile profileDto,
+                                               Errors errors) throws NotFoundException {
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(errorsUtil.processErrors(errors), HttpStatus.BAD_REQUEST);
         } else {
-            try {
-                response = new JSONObject().put("user_id", profileService.createOrUpdateProfile(
-                        userService.getCurrentUser(), profileDto).getId());
-                status = HttpStatus.OK;
-            } catch (BlankProfileFieldException e) {
-                response.put("errors", new JSONObject().put("global", new JSONArray().put(e.getMessage())));
-            }
+            return new ResponseEntity<>(profileService.createProfile(
+                    userService.getCurrentUserId(), profileDto), HttpStatus.OK);
         }
-        return new ResponseEntity<>(response.toString(), status);
     }
 
-    @DeleteMapping("/users.deleteProfile")
+    @PatchMapping("/profiles")
+    public ResponseEntity<Object> patchProfile(@ModelAttribute @Valid UserDto.Request.UpdateProfile profileDto,
+                                               Errors errors) throws NotFoundException {
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(errorsUtil.processErrors(errors), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(profileService.updateProfile(
+                    userService.getCurrentUserId(), profileDto), HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/profiles")
     public String deleteProfile() throws JSONException {
         return new JSONObject().put("user_id", userService.deleteCurrentProfile().getId()).toString();
     }

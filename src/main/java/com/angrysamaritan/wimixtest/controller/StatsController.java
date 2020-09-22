@@ -42,20 +42,20 @@ public class StatsController {
 
         var result = new JSONObject();
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        try {
-            User currentUser = userService.getCurrentUser();
-            Profile profile = currentUser.getProfile();
-            assert profile != null;
-            String email = profile.getEmail();
-            assert email != null;
-            Map<String, Object> templateMap = statsService.getStatsMap(request.getStartDate(), request.getEndDate());
-            templateMap.put("name", profile.getFirstName());
-            sendStatsMessage(email, "Your report", templateMap);
-            status = HttpStatus.OK;
-        } catch (AssertionError e) {
-            result.put("error", new JSONObject()
-                    .put("text", "Sorry, you must set up your profile and email before receiving reports"));
-        }
+//        try {
+//            User currentUser = userService.getCurrentUserId();
+//            Profile profile = currentUser.getProfile();
+//            assert profile != null;
+//            String email = profile.getEmail();
+//            assert email != null;
+//            Map<String, Object> templateMap = statsService.getStatsMap(request.getStartDate(), request.getEndDate());
+//            templateMap.put("name", profile.getFirstName());
+//            sendStatsMessage(email, "Your report", templateMap);
+//            status = HttpStatus.OK;
+//        } catch (AssertionError e) {
+//            result.put("error", new JSONObject()
+//                    .put("text", "Sorry, you must set up your profile and email before receiving reports"));
+//        }
         return new ResponseEntity<>(result.toString(), status);
     }
 

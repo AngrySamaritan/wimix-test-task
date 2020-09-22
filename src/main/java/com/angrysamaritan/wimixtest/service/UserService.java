@@ -1,12 +1,11 @@
 package com.angrysamaritan.wimixtest.service;
 
+import com.angrysamaritan.wimixtest.DTO.UserDto;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.ProfileRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import com.angrysamaritan.wimixtest.utils.UserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
@@ -16,17 +15,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.nio.charset.Charset;
-import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, ProfileRepository profileRepository) {
+    public UserService(UserRepository userRepository, ProfileRepository profileRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
+        this.userMapper = userMapper;
     }
 
     public User getUserById(long userId) {
@@ -36,39 +38,28 @@ public class UserService {
         );
     }
 
-    public JSONObject getProfile(long userId) throws Exception {
-        return profilesToJson(Collections.singletonList(getUserById(userId))).getJSONObject(0);
+    public UserDto.Response.Profile getProfile(long userId) {
+        return userMapper.userToProfileResponseDto(getUserById(userId));
     }
 
-    public JSONArray getProfilesByFirstName(String firstName, int page, int size) throws JSONException {
+    public List<UserDto.Response.Profile> getProfilesByFirstName(String firstName, int page, int size) {
         Page<User> users = userRepository.getUsersByFirstName(firstName, PageRequest.of(page, size));
-        return profilesToJson(users);
-    }
-
-    private JSONArray profilesToJson(Iterable<User> users) throws JSONException {
-        JSONArray usersJson = new JSONArray();
-        for (User user : users) {
-            JSONObject userJson = new JSONObject().put("username", user.getUsername());
-            JSONObject profile = null;
-            if (user.getProfile() != null) {
-                        profile = new JSONObject().put("first_name", user.getProfile().getFirstName())
-                        .put("last_name", user.getProfile().getLastName())
-                        .put("email", user.getProfile().getEmail());
-            }
-            userJson.put("profile", profile);
-            usersJson.put(userJson);
+        List<UserDto.Response.Profile> dtoList = new LinkedList<>();
+        for (User user: users) {
+            dtoList.add(userMapper.userToProfileResponseDto(user));
         }
-        return usersJson;
+        return dtoList;
     }
 
-    public User getCurrentUser() {
+
+    public long getCurrentUserId() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.getUserByUsername(username);
+        return userRepository.getUserIdByUsername(username);
     }
 
 
     public User deleteCurrentProfile() {
-        User user = getCurrentUser();
+        User user = getUserById(getCurrentUserId());
         Profile profile = user.getProfile();
         user.setProfile(null);
         user = userRepository.save(user);

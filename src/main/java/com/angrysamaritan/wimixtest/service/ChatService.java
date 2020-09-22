@@ -1,7 +1,7 @@
 package com.angrysamaritan.wimixtest.service;
 
 import com.angrysamaritan.wimixtest.model.Message;
-import com.angrysamaritan.wimixtest.model.MessageDto;
+import com.angrysamaritan.wimixtest.DTO.MessageDto;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
