@@ -1,6 +1,5 @@
 package com.angrysamaritan.wimixtest.validators;
 
-import com.angrysamaritan.wimixtest.DTO.RequestUserDto;
 import com.angrysamaritan.wimixtest.DTO.UserDto;
 
 import javax.validation.ConstraintValidator;

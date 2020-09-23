@@ -13,20 +13,17 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.List;
 
 @RestController
 public class ProfileController {
 
     private final UserService userService;
-    private final Validator validator;
     private final ErrorsUtil errorsUtil;
     private final ProfileService profileService;
 
-    public ProfileController(UserService userService, Validator validator, ErrorsUtil errorsUtil, ProfileService profileService) {
+    public ProfileController(UserService userService, ErrorsUtil errorsUtil, ProfileService profileService) {
         this.userService = userService;
-        this.validator = validator;
         this.errorsUtil = errorsUtil;
         this.profileService = profileService;
     }

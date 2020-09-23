@@ -25,4 +25,25 @@ public class UserMapper {
         return User.builder().password(encoder.encode(userDto.getPassword())).username(userDto.getUsername())
                 .profile(null).build();
     }
+
+    public Profile dtoToProfile(UserDto.Request.UpdateProfile profileDto, Profile profile) {
+        if (profileDto.getEmail() != null && !profileDto.getEmail().equals("")) {
+            profile.setEmail(profileDto.getEmail());
+        }
+        if (profileDto.getFirstName() != null && !profileDto.getFirstName().equals("")) {
+            profile.setFirstName(profileDto.getFirstName());
+        }
+        if (profileDto.getLastName() != null && !profileDto.getLastName().equals("")) {
+            profile.setLastName(profileDto.getLastName());
+        }
+        return profile;
+    }
+
+    public Profile dtoToProfile(UserDto.Request.CreateProfile profileDto) {
+        Profile profile = new Profile();
+        profile.setEmail(profileDto.getEmail());
+        profile.setFirstName(profileDto.getFirstName());
+        profile.setLastName(profileDto.getLastName());
+        return profile;
+    }
 }

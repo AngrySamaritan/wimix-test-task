@@ -9,9 +9,11 @@ import java.util.Map;
 @Setter
 @EqualsAndHashCode
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ErrorsDto {
 
+    @Builder.Default
     private Map<String, String> fieldErrors = new HashMap<>();
 
     private String globalError;
