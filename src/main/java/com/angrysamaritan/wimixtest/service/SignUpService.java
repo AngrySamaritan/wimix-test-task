@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SignUpService {
 
-    long signIn(UserDto.Request.SignUp requestUserDto);
+    long signUp(UserDto.Request.SignUp requestUserDto);
 
 }

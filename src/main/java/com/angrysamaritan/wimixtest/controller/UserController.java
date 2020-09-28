@@ -59,7 +59,7 @@ public class UserController {
             return new ResponseEntity<>(errorsUtil.processErrors(errors), status);
         } else {
             try {
-                Long id = signUpService.signIn(userDto);
+                Long id = signUpService.signUp(userDto);
                 status = HttpStatus.OK;
                 return new ResponseEntity<>(id, status);
             } catch (DataIntegrityViolationException e) {

@@ -17,7 +17,7 @@ public class SignUpServiceImpl implements SignUpService {
         this.userMapper = userMapper;
     }
 
-    public long signIn(UserDto.Request.SignUp userDto) {
+    public long signUp(UserDto.Request.SignUp userDto) {
         return userRepository.save(userMapper.signUpDtoToUser(userDto)).getId();
     }
 }
