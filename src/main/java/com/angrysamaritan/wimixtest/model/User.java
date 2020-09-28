@@ -10,39 +10,31 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private long id;
 
-    @Getter
-    @Setter
     @Column(unique = true)
     private String username;
 
-    @Getter
-    @Setter
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
-    @Getter
-    @Setter
     private Profile profile;
 
     @OneToMany(mappedBy = "sender")
-    @Getter
-    @Setter
+    @EqualsAndHashCode.Exclude
     private List<Message> sentMessages;
 
     @OneToMany(mappedBy = "recipient")
-    @Getter
-    @Setter
+    @EqualsAndHashCode.Exclude
     private List<Message> receivedMessages;
 
-    @Getter
-    @Setter
     private Date registrationDate;
 }

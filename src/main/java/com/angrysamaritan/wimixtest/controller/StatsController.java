@@ -1,11 +1,10 @@
 package com.angrysamaritan.wimixtest.controller;
 
-import com.angrysamaritan.wimixtest.model.StatsRequest;
-import com.angrysamaritan.wimixtest.service.MailServiceImpl;
-import com.angrysamaritan.wimixtest.service.StatsServiceImpl;
-import com.angrysamaritan.wimixtest.service.UserServiceImpl;
+import com.angrysamaritan.wimixtest.DTO.ErrorsDto;
+import com.angrysamaritan.wimixtest.DTO.UserDto;
+import com.angrysamaritan.wimixtest.DTO.StatsRequest;
+import com.angrysamaritan.wimixtest.service.*;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,9 +22,8 @@ public class StatsController {
 
     private final SpringTemplateEngine thymeleafTemplateEngine;
     private final MailServiceImpl mailService;
-    private final UserServiceImpl
-            userService;
-    private final StatsServiceImpl statsService;
+    private final UserService userService;
+    private final StatsService statsService;
 
     public StatsController(SpringTemplateEngine thymeleafTemplateEngine, MailServiceImpl mailService, UserServiceImpl userService, StatsServiceImpl statsService) {
         this.thymeleafTemplateEngine = thymeleafTemplateEngine;
@@ -36,25 +34,23 @@ public class StatsController {
 
 
     @PostMapping("/stats.sendMail")
-    public ResponseEntity<String> sendStats(@RequestBody StatsRequest request) throws JSONException, MessagingException {
-
-        var result = new JSONObject();
+    public ResponseEntity<Object> sendStats(@RequestBody StatsRequest request) throws JSONException, MessagingException {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-//        try {
-//            User currentUser = userService.getCurrentUserId();
-//            Profile profile = currentUser.getProfile();
-//            assert profile != null;
-//            String email = profile.getEmail();
-//            assert email != null;
-//            Map<String, Object> templateMap = statsService.getStatsMap(request.getStartDate(), request.getEndDate());
-//            templateMap.put("name", profile.getFirstName());
-//            sendStatsMessage(email, "Your report", templateMap);
-//            status = HttpStatus.OK;
-//        } catch (AssertionError e) {
-//            result.put("error", new JSONObject()
-//                    .put("text", "Sorry, you must set up your profile and email before receiving reports"));
-//        }
-        return new ResponseEntity<>(result.toString(), status);
+        try {
+            UserDto.Response.Profile currentUser = userService.getProfile(userService.getCurrentUserId());
+            assert currentUser != null;
+            String email = currentUser.getEmail();
+            assert email != null;
+            Map<String, Object> templateMap = statsService.getStatsMap(request.getStartDate(), request.getEndDate());
+            templateMap.put("name", currentUser.getFirstName() != null ?  currentUser.getFirstName() : "User");
+            sendStatsMessage(email, "Your report", templateMap);
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (AssertionError e) {
+            var errors = ErrorsDto.builder()
+                    .globalError("Sorry, you must set up your profile and email before receiving reports").build();
+            return new ResponseEntity<>(errors, status);
+        }
     }
 
     public void sendStatsMessage(String to, String subject, Map<String, Object> templateModel) throws MessagingException {

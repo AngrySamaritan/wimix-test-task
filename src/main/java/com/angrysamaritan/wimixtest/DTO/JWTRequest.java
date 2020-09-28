@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.model;
+package com.angrysamaritan.wimixtest.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +16,6 @@ public class JWTRequest implements Serializable {
     @Getter
     @Setter
     private String password;
-
-    public JWTRequest() {
-    }
 
     public JWTRequest(String username, String password) {
         this.username = username;
