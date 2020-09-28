@@ -1,8 +1,8 @@
 package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.DTO.UserDto;
-import com.angrysamaritan.wimixtest.service.ProfileService;
-import com.angrysamaritan.wimixtest.service.UserService;
+import com.angrysamaritan.wimixtest.service.ProfileServiceImpl;
+import com.angrysamaritan.wimixtest.service.UserServiceImpl;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
 import javassist.NotFoundException;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 public class ProfileController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final ErrorsUtil errorsUtil;
-    private final ProfileService profileService;
+    private final ProfileServiceImpl profileService;
 
-    public ProfileController(UserService userService, ErrorsUtil errorsUtil, ProfileService profileService) {
+    public ProfileController(UserServiceImpl userService, ErrorsUtil errorsUtil, ProfileServiceImpl profileService) {
         this.userService = userService;
         this.errorsUtil = errorsUtil;
         this.profileService = profileService;

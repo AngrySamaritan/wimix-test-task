@@ -2,7 +2,7 @@ package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.DTO.MessageDto;
 import com.angrysamaritan.wimixtest.service.ChatService;
-import com.angrysamaritan.wimixtest.service.UserService;
+import com.angrysamaritan.wimixtest.service.ChatServiceImpl;
 import javassist.NotFoundException;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -13,7 +13,7 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatServiceImpl chatService) {
         this.chatService = chatService;
     }
 

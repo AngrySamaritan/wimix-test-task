@@ -6,7 +6,6 @@ import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.SignUpService;
 import com.angrysamaritan.wimixtest.service.UserDetailsServiceImpl;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

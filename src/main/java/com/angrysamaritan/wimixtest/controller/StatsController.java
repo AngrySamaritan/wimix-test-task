@@ -1,11 +1,9 @@
 package com.angrysamaritan.wimixtest.controller;
 
-import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.StatsRequest;
-import com.angrysamaritan.wimixtest.model.User;
-import com.angrysamaritan.wimixtest.service.MailService;
-import com.angrysamaritan.wimixtest.service.StatsService;
-import com.angrysamaritan.wimixtest.service.UserService;
+import com.angrysamaritan.wimixtest.service.MailServiceImpl;
+import com.angrysamaritan.wimixtest.service.StatsServiceImpl;
+import com.angrysamaritan.wimixtest.service.UserServiceImpl;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -24,12 +22,12 @@ public class StatsController {
 
 
     private final SpringTemplateEngine thymeleafTemplateEngine;
-    private final MailService mailService;
-    private final UserService
+    private final MailServiceImpl mailService;
+    private final UserServiceImpl
             userService;
-    private final StatsService statsService;
+    private final StatsServiceImpl statsService;
 
-    public StatsController(SpringTemplateEngine thymeleafTemplateEngine, MailService mailService, UserService userService, StatsService statsService) {
+    public StatsController(SpringTemplateEngine thymeleafTemplateEngine, MailServiceImpl mailService, UserServiceImpl userService, StatsServiceImpl statsService) {
         this.thymeleafTemplateEngine = thymeleafTemplateEngine;
         this.mailService = mailService;
         this.userService = userService;
