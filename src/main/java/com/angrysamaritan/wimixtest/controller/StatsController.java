@@ -57,6 +57,6 @@ public class StatsController {
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
         String htmlBody = thymeleafTemplateEngine.process("stats.html", thymeleafContext);
-        mailService.sendMail(to, htmlBody, subject);
+        mailService.addToQueue(to, htmlBody, subject);
     }
 }
