@@ -2,6 +2,8 @@ package com.angrysamaritan.wimixtest.service;
 
 import com.angrysamaritan.wimixtest.model.MailLetter;
 import com.angrysamaritan.wimixtest.repositories.MailRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
+@Slf4j
 public class MailServiceImpl implements MailService {
 
     @Value("${spring.mail.sender}")
@@ -32,14 +35,13 @@ public class MailServiceImpl implements MailService {
     }
 
     @Scheduled(cron = "*/5 * * * * *")
-    public void sendMail() throws MessagingException {
-        System.out.println("TEST!!!!!!!!!!!!!!!!");
+    public void sendMail() {
         for (var letter: mailRepository.findAll()) {
             try {
                 sendLetter(letter.getRecipient(), letter.getText(), letter.getSubject());
                 mailRepository.delete(letter);
             } catch (Exception e) {
-                // TODO: log
+                log.error(String.format("Error sending mail to mail: %s", letter.getRecipient()));
             }
         }
     }
