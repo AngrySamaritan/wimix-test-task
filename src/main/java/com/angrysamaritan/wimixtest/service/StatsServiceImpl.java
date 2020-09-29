@@ -5,6 +5,8 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -23,6 +25,7 @@ public class StatsServiceImpl implements StatsService {
         this.messageRepository = messageRepository;
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.MANDATORY)
     public Map<String, Object> getStatsMap(Date startDate, Date endDate) {
         List<User> theMostCommunicativeUsers = getTheMostCommunicativeUsers(startDate, endDate);
         long registeredAmount = getRegisteredUsersAmountByPeriod(startDate, endDate);

@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface StatsService {
 
-    @Transactional(readOnly = true, propagation = Propagation.MANDATORY)
     Map<String, Object> getStatsMap(Date startDate, Date endDate);
 
 
