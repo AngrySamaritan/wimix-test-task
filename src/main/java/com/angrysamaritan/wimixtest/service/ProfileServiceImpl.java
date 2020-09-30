@@ -7,6 +7,8 @@ import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.utils.UserMapper;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -26,6 +28,7 @@ public class ProfileServiceImpl implements ProfileService{
         return user.getId();
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public long updateProfile(long id, UserDto.Request.UpdateProfile profileDto) throws NotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User id: " + id + " not found"));
         Profile profile = user.getProfile();

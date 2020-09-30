@@ -12,18 +12,21 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class MailLetter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Getter
-    private String text;
+    private String templateName;
 
-    @Getter
+
+    @Setter
+    private String templateModel;
+
+
     private String recipient;
 
-    @Getter
     private String subject;
 }

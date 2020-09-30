@@ -15,6 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -43,7 +46,11 @@ public class MailServiceTest {
 
     @Test
     public void sendStats() throws InterruptedException {
-        mailService.addToQueue(user.getProfile().getEmail(), "<h1>Success</h1>", "Test");
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("name", user.getProfile().getFirstName());
+        templateModel.put("registeredAmount", "100500");
+        templateModel.put("theMostCommunicativeUsers", new LinkedList<>());
+        mailService.addToQueue(user.getProfile().getEmail(), templateModel, "stats.html", "Test");
         Thread.sleep(40000);
     }
 
