@@ -7,6 +7,8 @@ import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -34,6 +36,7 @@ public class ChatServiceImpl implements ChatService{
                 "/queue/messages", msg);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void saveMessage(MessageDto msg) throws NotFoundException {
         Message message = new Message();
         message.setRecipient(userRepository.findById(msg.getSenderId()).orElseThrow(

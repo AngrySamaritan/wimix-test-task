@@ -21,6 +21,7 @@ public class ProfileServiceImpl implements ProfileService{
         this.userRepository = userRepository;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public long createProfile(long id, UserDto.Request.CreateProfile profileDto) throws NotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User id: " + id + " not found"));
         user.setProfile(userMapper.dtoToProfile(profileDto));

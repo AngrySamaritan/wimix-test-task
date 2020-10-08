@@ -4,7 +4,6 @@ import com.angrysamaritan.wimixtest.DTO.ErrorsDto;
 import com.angrysamaritan.wimixtest.DTO.StatsRequest;
 import com.angrysamaritan.wimixtest.DTO.UserDto;
 import com.angrysamaritan.wimixtest.service.*;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.mail.MessagingException;
 import java.util.Map;
 
 @Controller
@@ -31,7 +29,7 @@ public class StatsController {
 
 
     @PostMapping("/stats.sendMail")
-    public ResponseEntity<Object> sendStats(@RequestBody StatsRequest request) throws JSONException, MessagingException {
+    public ResponseEntity<Object> sendStats(@RequestBody StatsRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
             UserDto.Response.Profile currentUser = userService.getProfile(userService.getCurrentUserId());
