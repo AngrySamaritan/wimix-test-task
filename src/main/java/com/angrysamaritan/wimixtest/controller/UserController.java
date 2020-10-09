@@ -2,9 +2,9 @@ package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.DTO.ErrorsDto;
 import com.angrysamaritan.wimixtest.DTO.UserDto;
-import com.angrysamaritan.wimixtest.service.JWTService;
-import com.angrysamaritan.wimixtest.service.SignUpService;
-import com.angrysamaritan.wimixtest.service.UserDetailsServiceImpl;
+import com.angrysamaritan.wimixtest.service.interfaces.JWTService;
+import com.angrysamaritan.wimixtest.service.interfaces.SignUpService;
+import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

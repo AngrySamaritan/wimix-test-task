@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.service;
+package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import org.springframework.security.core.userdetails.User;

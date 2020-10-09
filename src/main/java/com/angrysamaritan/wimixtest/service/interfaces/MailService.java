@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.service;
+package com.angrysamaritan.wimixtest.service.interfaces;
 
 import javax.mail.MessagingException;
 import java.util.Map;

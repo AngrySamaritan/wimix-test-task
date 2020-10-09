@@ -1,9 +1,10 @@
-package com.angrysamaritan.wimixtest.service;
+package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.DTO.MessageDto;
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
+import com.angrysamaritan.wimixtest.service.interfaces.ChatService;
 import javassist.NotFoundException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 
 
 @Service
-public class ChatServiceImpl implements ChatService{
+public class ChatServiceImpl implements ChatService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final MessageRepository messageRepository;

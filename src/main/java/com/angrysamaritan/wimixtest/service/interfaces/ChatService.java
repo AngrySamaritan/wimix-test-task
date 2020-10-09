@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.service;
+package com.angrysamaritan.wimixtest.service.interfaces;
 
 import com.angrysamaritan.wimixtest.DTO.MessageDto;
 import javassist.NotFoundException;

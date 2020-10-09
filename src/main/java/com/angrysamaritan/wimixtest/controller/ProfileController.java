@@ -1,10 +1,10 @@
 package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.DTO.UserDto;
-import com.angrysamaritan.wimixtest.service.ProfileService;
-import com.angrysamaritan.wimixtest.service.ProfileServiceImpl;
-import com.angrysamaritan.wimixtest.service.UserService;
-import com.angrysamaritan.wimixtest.service.UserServiceImpl;
+import com.angrysamaritan.wimixtest.service.interfaces.ProfileService;
+import com.angrysamaritan.wimixtest.service.implementations.ProfileServiceImpl;
+import com.angrysamaritan.wimixtest.service.interfaces.UserService;
+import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
 import javassist.NotFoundException;
 import org.springframework.boot.configurationprocessor.json.JSONException;

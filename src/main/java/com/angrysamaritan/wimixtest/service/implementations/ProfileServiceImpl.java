@@ -1,9 +1,10 @@
-package com.angrysamaritan.wimixtest.service;
+package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.DTO.UserDto;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
+import com.angrysamaritan.wimixtest.service.interfaces.ProfileService;
 import com.angrysamaritan.wimixtest.utils.UserMapper;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceImpl implements ProfileService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;

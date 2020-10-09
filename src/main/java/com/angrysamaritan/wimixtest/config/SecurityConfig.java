@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.config;
 
-import com.angrysamaritan.wimixtest.service.UserDetailsServiceImpl;
+import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

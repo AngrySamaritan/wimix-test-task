@@ -1,10 +1,11 @@
-package com.angrysamaritan.wimixtest.service;
+package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.DTO.UserDto;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.ProfileRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
+import com.angrysamaritan.wimixtest.service.interfaces.UserService;
 import com.angrysamaritan.wimixtest.utils.UserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
