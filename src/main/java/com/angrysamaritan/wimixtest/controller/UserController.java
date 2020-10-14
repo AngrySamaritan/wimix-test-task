@@ -6,6 +6,7 @@ import com.angrysamaritan.wimixtest.service.interfaces.JWTService;
 import com.angrysamaritan.wimixtest.service.interfaces.SignUpService;
 import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
+import io.swagger.annotations.Api;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Api
 public class UserController {
 
     private final AuthenticationManager authenticationManager;

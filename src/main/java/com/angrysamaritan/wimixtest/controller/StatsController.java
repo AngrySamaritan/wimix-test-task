@@ -8,16 +8,18 @@ import com.angrysamaritan.wimixtest.service.implementations.StatsServiceImpl;
 import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import com.angrysamaritan.wimixtest.service.interfaces.StatsService;
 import com.angrysamaritan.wimixtest.service.interfaces.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import java.util.Map;
 
-@Controller
+@RestController
+@Api
 public class StatsController {
 
 

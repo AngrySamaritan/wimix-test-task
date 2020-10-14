@@ -6,6 +6,7 @@ import com.angrysamaritan.wimixtest.service.implementations.ProfileServiceImpl;
 import com.angrysamaritan.wimixtest.service.interfaces.UserService;
 import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
+import io.swagger.annotations.Api;
 import javassist.NotFoundException;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Api
 public class ProfileController {
 
     private final UserService userService;
@@ -30,12 +32,12 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping(value = "/profiles", params = "id")
-    public UserDto.Response.Profile getUsersById(@RequestParam("id") long id) {
+    @GetMapping(value = "/profiles/{id}")
+    public UserDto.Response.Profile getUsersById(@PathVariable("id") long id) {
         return userService.getProfile(id);
     }
 
-    @GetMapping(value = "/profiles", params = {"first_name", "page", "size"})
+    @GetMapping(value = "/profiles")
     public List<UserDto.Response.Profile> getUsersByName(@RequestParam("first_name") String firstName,
                                                          @RequestParam("page") int page,
                                                          @RequestParam("size") int size) {
