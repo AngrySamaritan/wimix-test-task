@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     public long getCurrentUserId() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.getUserIdByUsername(username);
+        return userRepository.getUserByUsername(username).getId();
     }
 
 

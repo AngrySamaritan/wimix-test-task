@@ -19,7 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getUserByUsername(String username);
 
-    long getUserIdByUsername(String username);
 
     @Query("SELECT u FROM User u WHERE u.registrationDate BETWEEN :startDate AND :endDate")
     List<User> getRegisteredUsersByPeriod(Date startDate, Date endDate);

@@ -67,7 +67,7 @@ public class UserController {
             } catch (DataIntegrityViolationException e) {
                 Map<String, String> fieldErrors = new HashMap<>();
                 fieldErrors.put("username", "Username already exist.");
-                return new ResponseEntity<>(ErrorsDto.builder().fieldErrors(fieldErrors), status);
+                return new ResponseEntity<>(ErrorsDto.builder().fieldErrors(fieldErrors).build(), status);
             }
         }
     }
