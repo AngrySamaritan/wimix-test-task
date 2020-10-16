@@ -1,6 +1,7 @@
 package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.exceptions.NoEmailSetException;
+import com.angrysamaritan.wimixtest.exceptions.RequestFormatException;
 import com.angrysamaritan.wimixtest.exceptions.SignUpException;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,10 @@ public class ExceptionController {
     }
 
 
-    @ExceptionHandler(SignUpException.class)
-    public ResponseEntity<Object> signUpException(SignUpException exception) {
+    @ExceptionHandler({RequestFormatException.class})
+    public ResponseEntity<Object> requestFormatException(SignUpException exception) {
         var errorsDto = errorsUtil.processErrors(exception.getErrors());
+        errorsDto.setMessage(exception.getMessage());
         return new ResponseEntity<>(errorsDto, HttpStatus.BAD_REQUEST);
     }
 

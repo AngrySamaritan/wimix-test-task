@@ -9,12 +9,9 @@ import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import com.angrysamaritan.wimixtest.service.interfaces.StatsService;
 import com.angrysamaritan.wimixtest.service.interfaces.UserService;
 import io.swagger.annotations.Api;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import java.util.Map;
 
@@ -27,7 +24,7 @@ public class StatsController {
     private final UserService userService;
     private final StatsService statsService;
 
-    public StatsController(SpringTemplateEngine thymeleafTemplateEngine, MailServiceImpl mailService, UserServiceImpl userService, StatsServiceImpl statsService) {
+    public StatsController(MailServiceImpl mailService, UserServiceImpl userService, StatsServiceImpl statsService) {
         this.mailService = mailService;
         this.userService = userService;
         this.statsService = statsService;

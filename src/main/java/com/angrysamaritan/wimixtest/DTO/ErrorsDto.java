@@ -17,4 +17,6 @@ public class ErrorsDto {
     private Map<String, String> fieldErrors = new HashMap<>();
 
     private String globalError;
+
+    private String message;
 }
