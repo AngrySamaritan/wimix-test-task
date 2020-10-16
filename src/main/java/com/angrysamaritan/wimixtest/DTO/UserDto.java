@@ -1,7 +1,9 @@
 package com.angrysamaritan.wimixtest.DTO;
 
 import com.angrysamaritan.wimixtest.validators.PasswordsMatches;
+import com.angrysamaritan.wimixtest.validators.UniqueUsername;
 import com.angrysamaritan.wimixtest.validators.ValidEmail;
+import com.angrysamaritan.wimixtest.validators.ValidPassword;
 import lombok.Getter;
 import lombok.Value;
 
@@ -48,8 +50,10 @@ public enum UserDto {
         public static class SignUp implements Username, PasswordWithConfirmation {
             String passwordConfirmation;
 
+            @UniqueUsername
             String username;
 
+            @ValidPassword
             String password;
         }
 
