@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.utils;
 
-import com.angrysamaritan.wimixtest.DTO.ErrorsDto;
+import com.angrysamaritan.wimixtest.dto.ErrorsDto;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 

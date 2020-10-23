@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.DTO;
+package com.angrysamaritan.wimixtest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.DTO;
+package com.angrysamaritan.wimixtest.dto;
 
 import lombok.*;
 

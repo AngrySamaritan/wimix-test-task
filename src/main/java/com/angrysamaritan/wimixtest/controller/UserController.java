@@ -1,6 +1,7 @@
 package com.angrysamaritan.wimixtest.controller;
 
-import com.angrysamaritan.wimixtest.DTO.UserDto;
+import com.angrysamaritan.wimixtest.dto.LogInReq;
+import com.angrysamaritan.wimixtest.dto.SignUpReq;
 import com.angrysamaritan.wimixtest.exceptions.SignUpException;
 import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import com.angrysamaritan.wimixtest.service.interfaces.JWTService;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Object login(@ModelAttribute UserDto.Request.Login authenticationRequest) {
+    public Object login(@ModelAttribute LogInReq authenticationRequest) {
         String username = authenticationRequest.getUsername();
         authenticate(username, authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -50,7 +51,7 @@ public class UserController {
 
     @PostMapping("/sign_up")
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Long signUp(@ModelAttribute @Valid UserDto.Request.SignUp userDto, Errors errors) {
+    public Long signUp(@ModelAttribute @Valid SignUpReq userDto, Errors errors) {
         if (errors.hasErrors()) {
             throw new SignUpException(errors);
         } else {

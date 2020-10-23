@@ -38,4 +38,5 @@ build/
 
 ### Config ###
 **/application-dev.yaml
+*.log
 

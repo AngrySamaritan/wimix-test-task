@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.service.implementations;
 
-import com.angrysamaritan.wimixtest.DTO.MessageDto;
+import com.angrysamaritan.wimixtest.dto.MessageDto;
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;

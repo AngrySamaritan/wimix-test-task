@@ -1,6 +1,7 @@
 package com.angrysamaritan.wimixtest.controller;
 
-import com.angrysamaritan.wimixtest.DTO.UserDto;
+import com.angrysamaritan.wimixtest.dto.ProfileCreateReq;
+import com.angrysamaritan.wimixtest.dto.ProfileDto;
 import com.angrysamaritan.wimixtest.exceptions.ProfileRequestException;
 import com.angrysamaritan.wimixtest.service.implementations.ProfileServiceImpl;
 import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
@@ -10,11 +11,13 @@ import io.swagger.annotations.Api;
 import javassist.NotFoundException;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.security.Principal;
 
 @RestController
 @Api
@@ -29,39 +32,39 @@ public class ProfileController {
     }
 
     @GetMapping(value = "/profiles/{id}")
-    public UserDto.Response.Profile getUsersById(@PathVariable("id") long id) {
-        return userService.getProfile(id);
+    public ProfileDto getUsersById(@PathVariable("id") long id) {
+        return profileService.getProfile(id);
     }
 
     @GetMapping(value = "/profiles")
-    public List<UserDto.Response.Profile> getUsersByName(@RequestParam("first_name") String firstName,
-                                                         @RequestParam("page") int page,
-                                                         @RequestParam("size") int size) {
-        return userService.getProfilesByFirstName(firstName, page, size);
+    public Page<ProfileDto> getUsersByName(@RequestParam String firstName, Pageable pageable) {
+        return profileService.getProfilesByFirstName(firstName, pageable.getPageNumber(), pageable.getPageSize());
     }
 
     @PostMapping("/profiles")
-    public long createProfile(@ModelAttribute @Valid UserDto.Request.CreateProfile profileDto,
-                              Errors errors) throws NotFoundException {
+    public long createProfile(@ModelAttribute @Valid ProfileCreateReq profileCreateReq,
+                              Errors errors, Principal principal) throws NotFoundException {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {
-            return profileService.createProfile(userService.getCurrentUserId(), profileDto);
+            return profileService.createProfile(userService.getIdByUsername(principal.getName()), profileCreateReq);
         }
     }
 
     @PatchMapping("/profiles")
-    public long patchProfile(@ModelAttribute @Valid UserDto.Request.UpdateProfile profileDto,
-                             Errors errors) throws NotFoundException {
+    public long patchProfile(@ModelAttribute @Valid ProfileDto profileDto,
+                             Errors errors, Principal principal) throws NotFoundException {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {
-            return profileService.updateProfile(userService.getCurrentUserId(), profileDto);
+            profileService.updateProfile(userService.getIdByUsername(principal.getName()), profileDto);
+            return 1L;
         }
     }
 
     @DeleteMapping("/profiles")
-    public String deleteProfile() throws JSONException {
-        return new JSONObject().put("user_id", userService.deleteCurrentProfile().getId()).toString();
+    public long deleteProfile(Principal principal) {
+        profileService.deleteProfile(userService.getIdByUsername(principal.getName()));
+        return 1L;
     }
 }

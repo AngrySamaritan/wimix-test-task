@@ -1,11 +1,11 @@
 package com.angrysamaritan.wimixtest;
 
-import com.angrysamaritan.wimixtest.DTO.UserDto;
+import com.angrysamaritan.wimixtest.dto.ProfileDtoResp;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.interfaces.JWTService;
-import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
+import com.angrysamaritan.wimixtest.service.interfaces.ProfileService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,7 +44,7 @@ public class ProfileControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private UserServiceImpl userService;
+    private ProfileService profileService;
 
     private final List<User> users = new LinkedList<>();
     private String token;
@@ -96,11 +95,10 @@ public class ProfileControllerTest {
     @Test
     public void getProfileById() throws Exception {
         User user = users.get(0);
-        JSONObject params = new JSONObject();
 
         mockMvc.perform(get("/users").header("Authorization", "Bearer " + token)
                 .param("user_id", String.valueOf(user.getId())))
-                .andExpect(content().json(userService.getProfile(user.getId()).toString()));
+                .andExpect(content().json(profileService.getProfile(user.getId()).toString()));
     }
 
     @Test
@@ -124,7 +122,7 @@ public class ProfileControllerTest {
     public void deleteProfile() throws Exception {
         mockMvc.perform(delete("/users.deleteProfile")
                 .header("Authorization", "Bearer " + token));
-        UserDto.Response.Profile profile = userService.getProfile(users.get(0).getId());
+        ProfileDtoResp profile = profileService.getProfile(users.get(0).getId());
         Assert.assertNull(profile.getEmail());
     }
 

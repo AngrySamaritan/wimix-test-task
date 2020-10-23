@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.service.interfaces;
 
-import com.angrysamaritan.wimixtest.DTO.MessageDto;
+import com.angrysamaritan.wimixtest.dto.MessageDto;
 import javassist.NotFoundException;
 
 public interface ChatService {
