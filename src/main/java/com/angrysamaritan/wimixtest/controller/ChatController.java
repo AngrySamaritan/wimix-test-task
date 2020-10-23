@@ -1,7 +1,7 @@
 package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.dto.MessageDto;
-import com.angrysamaritan.wimixtest.service.interfaces.ChatService;
+import com.angrysamaritan.wimixtest.service.ChatService;
 import com.angrysamaritan.wimixtest.service.implementations.ChatServiceImpl;
 import javassist.NotFoundException;
 import org.springframework.messaging.handler.annotation.MessageMapping;

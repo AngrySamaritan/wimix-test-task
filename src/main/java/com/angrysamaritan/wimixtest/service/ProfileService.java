@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.service.interfaces;
+package com.angrysamaritan.wimixtest.service;
 
 import com.angrysamaritan.wimixtest.dto.ProfileCreateReq;
 import com.angrysamaritan.wimixtest.dto.ProfileDto;

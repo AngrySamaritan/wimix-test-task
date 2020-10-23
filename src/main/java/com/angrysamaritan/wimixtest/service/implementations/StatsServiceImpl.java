@@ -4,7 +4,7 @@ import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
-import com.angrysamaritan.wimixtest.service.interfaces.StatsService;
+import com.angrysamaritan.wimixtest.service.StatsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

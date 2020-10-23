@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.service.implementations;
 
-import com.angrysamaritan.wimixtest.service.interfaces.JWTService;
+import com.angrysamaritan.wimixtest.service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

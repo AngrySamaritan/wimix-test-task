@@ -3,7 +3,7 @@ package com.angrysamaritan.wimixtest;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
-import com.angrysamaritan.wimixtest.service.interfaces.MailService;
+import com.angrysamaritan.wimixtest.service.MailService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -3,7 +3,7 @@ package com.angrysamaritan.wimixtest.service.implementations;
 import com.angrysamaritan.wimixtest.dto.SignUpReq;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
-import com.angrysamaritan.wimixtest.service.interfaces.SignUpService;
+import com.angrysamaritan.wimixtest.service.SignUpService;
 import com.angrysamaritan.wimixtest.utils.ModelMapper;
 import org.springframework.stereotype.Service;
 

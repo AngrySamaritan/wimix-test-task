@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.service.interfaces;
+package com.angrysamaritan.wimixtest.service;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

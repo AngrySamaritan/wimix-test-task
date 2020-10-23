@@ -1,4 +1,4 @@
-package com.angrysamaritan.wimixtest.service.interfaces;
+package com.angrysamaritan.wimixtest.service;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;

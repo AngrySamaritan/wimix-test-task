@@ -1,6 +1,6 @@
 package com.angrysamaritan.wimixtest.config;
 
-import com.angrysamaritan.wimixtest.service.interfaces.JWTService;
+import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.implementations.JWTServiceImpl;
 import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

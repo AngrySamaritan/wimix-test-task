@@ -2,7 +2,7 @@ package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.model.MailLetter;
 import com.angrysamaritan.wimixtest.repositories.MailRepository;
-import com.angrysamaritan.wimixtest.service.interfaces.MailService;
+import com.angrysamaritan.wimixtest.service.MailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

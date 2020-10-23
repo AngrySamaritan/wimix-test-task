@@ -5,7 +5,7 @@ import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.ProfileRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
-import com.angrysamaritan.wimixtest.service.interfaces.ProfileService;
+import com.angrysamaritan.wimixtest.service.ProfileService;
 import com.angrysamaritan.wimixtest.utils.ModelMapper;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import com.angrysamaritan.wimixtest.dto.MessageDto;
 import com.angrysamaritan.wimixtest.model.Message;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
-import com.angrysamaritan.wimixtest.service.interfaces.ChatService;
+import com.angrysamaritan.wimixtest.service.ChatService;
 import javassist.NotFoundException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
