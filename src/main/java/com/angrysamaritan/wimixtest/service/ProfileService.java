@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 
 public interface ProfileService {
 
-    long createProfile(long id, ProfileCreateReq profileCreateReq) throws NotFoundException;
+    long createProfile(long id, ProfileCreateReq profileCreateReq);
 
-    void updateProfile(long id, ProfileDto profileDto) throws NotFoundException;
+    void updateProfile(long id, ProfileDto profileDto);
 
     Page<ProfileDto> getProfilesByFirstName(String firstName, int page, int size);
 

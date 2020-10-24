@@ -1,7 +1,9 @@
 package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.dto.MessageDto;
+import com.angrysamaritan.wimixtest.exceptions.UserNotFoundException;
 import com.angrysamaritan.wimixtest.model.Message;
+import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.MessageRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.ChatService;
@@ -37,13 +39,12 @@ public class ChatServiceImpl implements ChatService {
                 "/queue/messages", msg);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void saveMessage(MessageDto msg) throws NotFoundException {
+    public void saveMessage(MessageDto msg) {
         Message message = new Message();
         message.setRecipient(userRepository.findById(msg.getSenderId()).orElseThrow(
-                ()-> new NotFoundException("Sender id: " + msg.getSenderId() + " not found")));
+                ()-> new UserNotFoundException(msg.getSenderId())));
         message.setSender(userRepository.findById(msg.getRecipientId()).orElseThrow(
-                ()-> new NotFoundException("Recipient id: " + msg.getRecipientId() + " not found")));
+                ()-> new UserNotFoundException(msg.getRecipientId())));
         message.setText(msg.getText());
         message.setDate(Date.valueOf(LocalDate.now()));
         messageRepository.save(message);

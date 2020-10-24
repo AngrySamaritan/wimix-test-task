@@ -1,6 +1,7 @@
 package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.dto.*;
+import com.angrysamaritan.wimixtest.exceptions.UserNotFoundException;
 import com.angrysamaritan.wimixtest.model.Profile;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.ProfileRepository;
@@ -33,8 +34,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public long createProfile(long id, ProfileCreateReq profileDto) throws NotFoundException {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User id: " + id + " not found"));
+    public long createProfile(long id, ProfileCreateReq profileDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         user.setProfile(ModelMapper.map(profileDto, Profile.class));
         userRepository.save(user);
         return user.getId();
