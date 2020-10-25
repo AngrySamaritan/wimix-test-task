@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 public interface ProfileService {
 
-    long createProfile(long id, ProfileCreateReq profileCreateReq);
+    void createProfile(long id, ProfileCreateReq profileCreateReq);
 
     void updateProfile(long id, ProfileDto profileDto);
 

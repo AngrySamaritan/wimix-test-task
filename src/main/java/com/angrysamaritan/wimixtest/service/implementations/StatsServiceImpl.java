@@ -67,7 +67,8 @@ public class StatsServiceImpl implements StatsService {
     }
 
     private long getRegisteredUsersAmountByPeriod(Date startDate, Date endDate) {
-        return userRepository.getRegisteredUsersByPeriod(startDate, endDate).size();
+        List<User> registeredUsers = userRepository.getRegisteredUsersByPeriod(startDate, endDate);
+        return registeredUsers.size();
     }
 
 }

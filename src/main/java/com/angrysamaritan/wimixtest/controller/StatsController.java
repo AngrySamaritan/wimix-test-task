@@ -51,7 +51,7 @@ public class StatsController {
         templateMap.put("name", currentUserProfile.getFirstName() != null ?
                 currentUserProfile.getFirstName() : "User");
         sendStatsMessage(email, templateMap, "stats.html", "Your report");
-        return 0L;
+        return 1L;
     }
 
     public void sendStatsMessage(String to, Map<String, Object> templateModel, String templateName, String subject) {

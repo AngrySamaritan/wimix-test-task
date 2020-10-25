@@ -1,14 +1,16 @@
 package com.angrysamaritan.wimixtest.dto;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProfileDtoResp extends ProfileDto {
 
-    private final UserDto userDto;
+    private UserDto userDto;
 
-    public ProfileDtoResp(String firstName, String lastName, String email, UserDto userDto) {
-        super(firstName, lastName, email);
-        this.userDto = userDto;
-    }
 }

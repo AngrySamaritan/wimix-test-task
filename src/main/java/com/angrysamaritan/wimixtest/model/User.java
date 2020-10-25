@@ -24,15 +24,15 @@ public class User {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToMany(mappedBy = "sender")
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     private List<Message> sentMessages;
 
-    @OneToMany(mappedBy = "recipient")
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     private List<Message> receivedMessages;
 

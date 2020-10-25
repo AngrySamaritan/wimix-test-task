@@ -40,9 +40,9 @@ public class MailServiceImpl implements MailService {
     }
 
     public void addToQueue(String to, Map<String, Object> templateModel, String templateName, String subject) {
+        String templateModelString = new JSONObject(templateModel).toString();
         MailLetter mailLetter = MailLetter.builder().subject(subject).templateName(templateName)
-                .recipient(to).build();
-        mailLetter.setTemplateModel(new JSONObject(templateModel).toString());
+                .recipient(to).templateModel(templateModelString).build();
         mailRepository.save(mailLetter);
     }
 

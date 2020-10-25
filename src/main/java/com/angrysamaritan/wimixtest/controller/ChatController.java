@@ -1,9 +1,7 @@
 package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.dto.MessageDto;
-import com.angrysamaritan.wimixtest.service.ChatService;
-import com.angrysamaritan.wimixtest.service.implementations.ChatServiceImpl;
-import javassist.NotFoundException;
+import com.angrysamaritan.wimixtest.facades.ChatServiceFacade;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
@@ -11,15 +9,14 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
-    private final ChatService chatService;
+    private final ChatServiceFacade chatServiceFacade;
 
-    public ChatController(ChatServiceImpl chatService) {
-        this.chatService = chatService;
+    public ChatController(ChatServiceFacade chatServiceFacade) {
+        this.chatServiceFacade = chatServiceFacade;
     }
 
     @MessageMapping("/sendMessage")
-    public void sendSpecific(@Payload MessageDto msg) throws NotFoundException {
-        chatService.saveMessage(msg);
-        chatService.sendMessage(msg);
+    public void sendSpecific(@Payload MessageDto msg) {
+        chatServiceFacade.saveAndSend(msg);
     }
 }

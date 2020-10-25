@@ -45,7 +45,8 @@ public class ProfileController {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {
-            return profileService.createProfile(userService.getIdByUsername(principal.getName()), profileCreateReq);
+            profileService.createProfile(userService.getIdByUsername(principal.getName()), profileCreateReq);
+            return 1L;
         }
     }
 

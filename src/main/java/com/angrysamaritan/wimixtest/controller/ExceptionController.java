@@ -1,10 +1,7 @@
 package com.angrysamaritan.wimixtest.controller;
 
 import com.angrysamaritan.wimixtest.dto.ErrorsDto;
-import com.angrysamaritan.wimixtest.exceptions.NoEmailSetException;
-import com.angrysamaritan.wimixtest.exceptions.RequestFormatException;
-import com.angrysamaritan.wimixtest.exceptions.SignUpException;
-import com.angrysamaritan.wimixtest.exceptions.UserNotFoundException;
+import com.angrysamaritan.wimixtest.exceptions.*;
 import com.angrysamaritan.wimixtest.utils.ErrorsUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +30,7 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> userNotFoundException(UserNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
