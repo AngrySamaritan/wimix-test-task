@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
         List<ProfileDto> dtoList = new LinkedList<>();
         for (Profile profile: profiles) {
             ProfileDtoResp profileDto = mapper.map(profile, ProfileDtoResp.class);
-            profileDto.setUserDto(mapper.map(profile.getUser(), UserDto.class));
+            profileDto.setUser(mapper.map(profile.getUser(), UserDto.class));
             dtoList.add(profileDto);
         }
         return new PageImpl<>(dtoList);
@@ -78,7 +78,7 @@ public class ProfileServiceImpl implements ProfileService {
             throw new ProfileNotFoundException(userId);
         }
         ProfileDtoResp profileDtoResp = mapper.map(profile, ProfileDtoResp.class);
-        profileDtoResp.setUserDto(mapper.map(profile.getUser(), UserDto.class));
+        profileDtoResp.setUser(mapper.map(profile.getUser(), UserDto.class));
         return profileDtoResp;
     }
 

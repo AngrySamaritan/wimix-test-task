@@ -1,8 +1,5 @@
 package com.angrysamaritan.wimixtest.service;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.Date;
 import java.util.Map;
 

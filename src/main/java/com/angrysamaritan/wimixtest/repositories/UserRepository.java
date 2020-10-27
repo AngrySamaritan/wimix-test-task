@@ -17,9 +17,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.registrationDate BETWEEN :startDate AND :endDate")
     List<User> getRegisteredUsersByPeriod(Date startDate, Date endDate);
 
-//    @Query("SELECT u FROM User u JOIN WHERE (u.sentMessages.size + u.receivedMessages.size) = " +
-//            "(SELECT (u.receivedMessages.size + u.sentMessages.size) FROM u JOIN Message m " +
-//            "WHERE m.date BETWEEN :startDate AND :endDate GROUP BY " +
-//            "(u.receivedMessages.size + u.sentMessages.size)) ")
-//    List<User> getTheMostCommunicativeUsers();
+    @Query(value = "SELECT u.id " +
+            "FROM user u JOIN message m " +
+            "ON (u.id = m.recipient_id OR u.id = m.sender_id) AND m.date BETWEEN :startDate and :endDate " +
+            "GROUP BY u.id HAVING COUNT(m.id) = " +
+            "(SELECT MAX(C) FROM (SELECT COUNT(message.id) AS C " +
+            "FROM user JOIN message ON (user.id = message.recipient_id OR user.id = message.sender_id) " +
+            "AND message.date BETWEEN :startDate and :endDate " +
+            "GROUP BY user.id) as umC)", nativeQuery = true)
+    List<Long> getTheMostCommunicativeUsers(Date startDate, Date endDate);
 }

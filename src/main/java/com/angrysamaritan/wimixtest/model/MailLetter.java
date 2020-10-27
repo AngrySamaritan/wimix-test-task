@@ -2,10 +2,8 @@ package com.angrysamaritan.wimixtest.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Blob;
 
 @Entity
 @EqualsAndHashCode
@@ -23,7 +21,8 @@ public class MailLetter {
 
 
     @Setter
-    private String templateModel;
+    @Lob
+    private byte[] templateModel;
 
 
     private String recipient;

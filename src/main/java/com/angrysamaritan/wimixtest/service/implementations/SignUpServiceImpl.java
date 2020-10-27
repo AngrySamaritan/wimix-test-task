@@ -5,7 +5,12 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.SignUpService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
@@ -13,17 +18,24 @@ public class SignUpServiceImpl implements SignUpService {
 
     private final UserRepository userRepository;
     private final ModelMapper mapper;
+    private final BCryptPasswordEncoder encoder;
 
 
-    public SignUpServiceImpl(UserRepository userRepository, ModelMapper mapper) {
+    @Autowired
+    public SignUpServiceImpl(UserRepository userRepository, ModelMapper mapper, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.encoder = encoder;
     }
 
     @Override
     public long signUp(SignUpReq userDto) {
-        User map = mapper.map(userDto, User.class);
-        User user = userRepository.save(map);
+        User user = mapper.map(userDto, User.class);
+        String password = encoder.encode(user.getPassword());
+        user.setPassword(password);
+        user = userRepository.save(user);
+        Date date = Date.valueOf(LocalDate.now());
+        user.setRegistrationDate(date);
         return user.getId();
     }
 }

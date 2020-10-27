@@ -3,6 +3,7 @@ package com.angrysamaritan.wimixtest.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
 @EqualsAndHashCode
 @Getter
 @Setter
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1843223531832970471L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +27,9 @@ public class User {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id")
+    @EqualsAndHashCode.Exclude
     private Profile profile;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)

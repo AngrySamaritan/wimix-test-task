@@ -26,12 +26,14 @@ public class Message {
     @Getter
     @Setter
     @JoinColumn(name = "sender_id")
+    @EqualsAndHashCode.Exclude
     private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Getter
     @Setter
     @JoinColumn(name = "recipient_id")
+    @EqualsAndHashCode.Exclude
     private User recipient;
 
     @Getter

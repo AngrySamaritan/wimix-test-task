@@ -3,12 +3,11 @@ package com.angrysamaritan.wimixtest.controller;
 import com.angrysamaritan.wimixtest.dto.ProfileCreateReq;
 import com.angrysamaritan.wimixtest.dto.ProfileDto;
 import com.angrysamaritan.wimixtest.exceptions.ProfileRequestException;
-import com.angrysamaritan.wimixtest.service.implementations.ProfileServiceImpl;
-import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import com.angrysamaritan.wimixtest.service.ProfileService;
 import com.angrysamaritan.wimixtest.service.UserService;
+import com.angrysamaritan.wimixtest.service.implementations.ProfileServiceImpl;
+import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import io.swagger.annotations.Api;
-import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.Errors;
@@ -41,7 +40,7 @@ public class ProfileController {
 
     @PostMapping("/profiles")
     public long createProfile(@ModelAttribute @Valid ProfileCreateReq profileCreateReq,
-                              Errors errors, Principal principal) throws NotFoundException {
+                              Errors errors, Principal principal) {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {
@@ -52,7 +51,7 @@ public class ProfileController {
 
     @PatchMapping("/profiles")
     public long patchProfile(@ModelAttribute @Valid ProfileDto profileDto,
-                             Errors errors, Principal principal) throws NotFoundException {
+                             Errors errors, Principal principal) {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {

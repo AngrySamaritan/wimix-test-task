@@ -1,6 +1,5 @@
 package com.angrysamaritan.wimixtest.service;
 
-import javax.mail.MessagingException;
 import java.util.Map;
 
 public interface MailService {

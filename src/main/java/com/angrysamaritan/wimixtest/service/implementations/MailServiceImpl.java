@@ -3,10 +3,9 @@ package com.angrysamaritan.wimixtest.service.implementations;
 import com.angrysamaritan.wimixtest.model.MailLetter;
 import com.angrysamaritan.wimixtest.repositories.MailRepository;
 import com.angrysamaritan.wimixtest.service.MailService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.internal.util.SerializationHelper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -40,18 +39,21 @@ public class MailServiceImpl implements MailService {
     }
 
     public void addToQueue(String to, Map<String, Object> templateModel, String templateName, String subject) {
-        String templateModelString = new JSONObject(templateModel).toString();
+        byte[] templateModelBytes = SerializationHelper.serialize(new HashMap<>(templateModel));
         MailLetter mailLetter = MailLetter.builder().subject(subject).templateName(templateName)
-                .recipient(to).templateModel(templateModelString).build();
+                .recipient(to).templateModel(templateModelBytes).build();
         mailRepository.save(mailLetter);
     }
 
     @Scheduled(cron = "*/5 * * * * *")
     public void sendMail() {
-        for (var letter: mailRepository.findAll()) {
+        for (var letter : mailRepository.findAll()) {
             try {
+                Map<String, Object> templateModel = (Map<String, Object>) SerializationHelper.deserialize(
+                        letter.getTemplateModel());
                 sendLetter(letter.getRecipient(),
-                        new ObjectMapper().readValue(letter.getTemplateModel(), HashMap.class), letter.getTemplateName(),
+                        templateModel,
+                        letter.getTemplateName(),
                         letter.getSubject());
                 mailRepository.delete(letter);
             } catch (Exception e) {

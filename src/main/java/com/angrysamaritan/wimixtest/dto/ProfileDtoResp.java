@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class ProfileDtoResp extends ProfileDto {
 
-    private UserDto userDto;
+    private UserDto user;
 
 }
