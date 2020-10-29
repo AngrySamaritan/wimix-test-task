@@ -4,6 +4,7 @@ import com.angrysamaritan.wimixtest.dto.ProfileCreateReq;
 import com.angrysamaritan.wimixtest.dto.ProfileDto;
 import com.angrysamaritan.wimixtest.dto.ProfileDtoResp;
 import com.angrysamaritan.wimixtest.dto.UserDto;
+import com.angrysamaritan.wimixtest.exceptions.NotFoundException;
 import com.angrysamaritan.wimixtest.exceptions.ProfileNotFoundException;
 import com.angrysamaritan.wimixtest.exceptions.UserNotFoundException;
 import com.angrysamaritan.wimixtest.model.Profile;
@@ -72,7 +73,7 @@ public class ProfileServiceImpl implements ProfileService {
         profileRepository.save(profile);
     }
 
-    public ProfileDtoResp getProfile(long userId) {
+    public ProfileDtoResp getProfile(long userId) throws NotFoundException {
         Profile profile = profileRepository.getProfileByUserId(userId);
         if (profile == null) {
             throw new ProfileNotFoundException(userId);

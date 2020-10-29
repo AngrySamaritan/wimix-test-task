@@ -34,8 +34,8 @@ public class ProfileController {
     }
 
     @GetMapping(value = "/profiles")
-    public Page<ProfileDto> getUsersByName(@RequestParam String firstName, Pageable pageable) {
-        return profileService.getProfilesByFirstName(firstName, pageable.getPageNumber(), pageable.getPageSize());
+    public Page<ProfileDto> getUsersByName(@RequestParam String firstName, int page, int size) {
+        return profileService.getProfilesByFirstName(firstName, page, size);
     }
 
     @PostMapping("/profiles")

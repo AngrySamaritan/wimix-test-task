@@ -18,8 +18,8 @@ public class ExceptionController {
     }
 
 
-    @ExceptionHandler(RequestFormatException.class)
-    public ResponseEntity<ErrorsDto> requestFormatException(SignUpException exception) {
+    @ExceptionHandler({SignUpException.class, ProfileRequestException.class})
+    public ResponseEntity<ErrorsDto> requestFormatException(RequestFormatException exception) {
         ErrorsDto errorsDto = errorsUtil.processErrors(exception.getErrors());
         errorsDto.setMessage(exception.getMessage());
         return new ResponseEntity<>(errorsDto, HttpStatus.BAD_REQUEST);
@@ -30,8 +30,8 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> userNotFoundException(UserNotFoundException exception) {
+    @ExceptionHandler({ProfileNotFoundException.class, UserNotFoundException.class})
+    public ResponseEntity<String> userNotFoundException(NotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
