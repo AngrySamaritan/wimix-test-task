@@ -33,9 +33,9 @@ public class SignUpServiceImpl implements SignUpService {
         User user = mapper.map(userDto, User.class);
         String password = encoder.encode(user.getPassword());
         user.setPassword(password);
-        user = userRepository.save(user);
         Date date = Date.valueOf(LocalDate.now());
         user.setRegistrationDate(date);
+        user = userRepository.save(user);
         return user.getId();
     }
 }

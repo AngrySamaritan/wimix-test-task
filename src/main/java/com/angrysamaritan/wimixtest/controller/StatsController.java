@@ -47,14 +47,10 @@ public class StatsController {
         if (currentUserProfile == null || (email = currentUserProfile.getEmail()) == null) {
             throw new NoEmailSetException(currentUserId);
         }
-        Map<String, Object> templateMap = statsService.getStatsMap(request.getStartDate(), request.getEndDate());
-        templateMap.put("name", currentUserProfile.getFirstName() != null ?
+        Map<String, Object> modelMap = statsService.getStatsMap(request.getStartDate(), request.getEndDate());
+        modelMap.put("name", currentUserProfile.getFirstName() != null ?
                 currentUserProfile.getFirstName() : "User");
-        sendStatsMessage(email, templateMap, "stats.html", "Your report");
+        mailService.addToQueue(email, modelMap, "stats.html", "Your report");
         return 1L;
-    }
-
-    public void sendStatsMessage(String to, Map<String, Object> templateModel, String templateName, String subject) {
-        mailService.addToQueue(to, templateModel, templateName, subject);
     }
 }

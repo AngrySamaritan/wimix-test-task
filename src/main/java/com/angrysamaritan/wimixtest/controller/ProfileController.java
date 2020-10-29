@@ -9,7 +9,6 @@ import com.angrysamaritan.wimixtest.service.implementations.ProfileServiceImpl;
 import com.angrysamaritan.wimixtest.service.implementations.UserServiceImpl;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +43,8 @@ public class ProfileController {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {
-            profileService.createProfile(userService.getIdByUsername(principal.getName()), profileCreateReq);
+            long id = userService.getIdByUsername(principal.getName());
+            profileService.createProfile(id, profileCreateReq);
             return 1L;
         }
     }
@@ -55,14 +55,16 @@ public class ProfileController {
         if (errors.hasErrors()) {
             throw new ProfileRequestException(errors);
         } else {
-            profileService.updateProfile(userService.getIdByUsername(principal.getName()), profileDto);
+            long id = userService.getIdByUsername(principal.getName());
+            profileService.updateProfile(id, profileDto);
             return 1L;
         }
     }
 
     @DeleteMapping("/profiles")
     public long deleteProfile(Principal principal) {
-        profileService.deleteProfile(userService.getIdByUsername(principal.getName()));
+        long id = userService.getIdByUsername(principal.getName());
+        profileService.deleteProfile(id);
         return 1L;
     }
 }
