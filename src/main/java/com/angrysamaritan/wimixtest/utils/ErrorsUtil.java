@@ -3,6 +3,7 @@ package com.angrysamaritan.wimixtest.utils;
 import com.angrysamaritan.wimixtest.dto.ErrorsDto;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ public class ErrorsUtil {
 
     public ErrorsDto processErrors(Errors errors) {
         var errorsDto = new ErrorsDto();
-        for (var error : errors.getFieldErrors()) {
+        for (FieldError error : errors.getFieldErrors()) {
             String fieldName = error.getField();
             errorsDto.getFieldErrors().put(fieldName, error.getDefaultMessage());
         }

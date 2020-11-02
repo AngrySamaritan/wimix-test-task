@@ -4,7 +4,7 @@ import com.angrysamaritan.wimixtest.dto.SignUpReq;
 import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.SignUpService;
-import org.modelmapper.ModelMapper;
+import com.angrysamaritan.wimixtest.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,12 +17,12 @@ public class SignUpServiceImpl implements SignUpService {
 
 
     private final UserRepository userRepository;
-    private final ModelMapper mapper;
+    private final Mapper mapper;
     private final BCryptPasswordEncoder encoder;
 
 
     @Autowired
-    public SignUpServiceImpl(UserRepository userRepository, ModelMapper mapper, BCryptPasswordEncoder encoder) {
+    public SignUpServiceImpl(UserRepository userRepository, Mapper mapper, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.encoder = encoder;

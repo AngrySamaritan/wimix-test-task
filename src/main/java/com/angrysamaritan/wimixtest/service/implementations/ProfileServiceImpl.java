@@ -12,7 +12,7 @@ import com.angrysamaritan.wimixtest.model.User;
 import com.angrysamaritan.wimixtest.repositories.ProfileRepository;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.ProfileService;
-import org.modelmapper.ModelMapper;
+import com.angrysamaritan.wimixtest.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,10 +28,10 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-    private final ModelMapper mapper;
+    private final Mapper mapper;
 
     @Autowired
-    public ProfileServiceImpl(UserRepository userRepository, ProfileRepository profileRepository, ModelMapper mapper) {
+    public ProfileServiceImpl(UserRepository userRepository, ProfileRepository profileRepository, Mapper mapper) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
         this.mapper = mapper;
