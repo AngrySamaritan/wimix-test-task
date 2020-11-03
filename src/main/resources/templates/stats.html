@@ -19,21 +19,21 @@
 <h3>The most communicative users</h3>
 <table style="border: black 1px solid; border-collapse: collapse">
     <thead>
-        <tr style="background: bisque">
-            <th th:text="'#'"></th>
-            <th th:text="'Username'"></th>
-            <th th:text="'First Name'"></th>
-            <th th:text="'Last Name'"></th>
-        </tr>
+    <tr style="background: bisque">
+        <th th:text="'#'"></th>
+        <th th:text="'Username'"></th>
+        <th th:text="'First Name'"></th>
+        <th th:text="'Last Name'"></th>
+    </tr>
     </thead>
     <!--/*@thymesVar id="theMostCommunicativeUsers" type="java.util.List<com.angrysamaritan.wimixtest.model.User>"*/-->
     <tbody>
-        <tr th:each="user, stat: ${theMostCommunicativeUsers}">
-            <td th:text="${stat.count}"></td>
-            <td th:text="${user.getUsername()}"></td>
-            <td th:text="${user.getProfile().getFirstName()}"></td>
-            <td th:text="${user.getProfile().getLastName()}"></td>
-        </tr>
+    <tr th:each="user, stat: ${theMostCommunicativeUsers}">
+        <td th:text="${stat.count}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getProfile()} ? ${user.getProfile().getFirstName()} : 'null'"></td>
+        <td th:text="${user.getProfile()} ? ${user.getProfile().getLastName()} : 'null'"></td>
+    </tr>
     </tbody>
 </table>
 </body>

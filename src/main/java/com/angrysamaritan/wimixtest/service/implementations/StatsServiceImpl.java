@@ -1,8 +1,11 @@
 package com.angrysamaritan.wimixtest.service.implementations;
 
 import com.angrysamaritan.wimixtest.model.User;
+import com.angrysamaritan.wimixtest.repositories.StatsRepository;
+import com.angrysamaritan.wimixtest.repositories.StatsRepositoryImpl;
 import com.angrysamaritan.wimixtest.repositories.UserRepository;
 import com.angrysamaritan.wimixtest.service.StatsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +18,12 @@ import java.util.Map;
 public class StatsServiceImpl implements StatsService {
 
     private final UserRepository userRepository;
+    private final StatsRepository statsRepository;
 
-    public StatsServiceImpl(UserRepository userRepository) {
+    @Autowired
+    public StatsServiceImpl(UserRepository userRepository, StatsRepositoryImpl statsRepository) {
         this.userRepository = userRepository;
+        this.statsRepository = statsRepository;
     }
 
     @Transactional(readOnly = true)
@@ -31,7 +37,7 @@ public class StatsServiceImpl implements StatsService {
     }
 
     private List<User> getTheMostCommunicativeUsers(Date startDate, Date endDate) {
-        List<Long> theMostCommunicativeUsersId = userRepository.getTheMostCommunicativeUsers(startDate, endDate);
+        List<Long> theMostCommunicativeUsersId = statsRepository.getCommunicativeUserIds(startDate, endDate);
         return userRepository.findAllById(theMostCommunicativeUsersId);
     }
 
