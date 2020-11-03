@@ -3,8 +3,8 @@ package com.angrysamaritan.wimixtest.service.implementations;
 import com.angrysamaritan.wimixtest.model.MailLetter;
 import com.angrysamaritan.wimixtest.repositories.MailRepository;
 import com.angrysamaritan.wimixtest.service.MailService;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.internal.util.SerializationHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@Slf4j
 public class MailServiceImpl implements MailService {
 
     @Value("${spring.mail.sender}")
@@ -32,7 +31,9 @@ public class MailServiceImpl implements MailService {
 
     private final JavaMailSender mailSender;
 
-    public MailServiceImpl(MailRepository mailRepository, SpringTemplateEngine thymeleafTemplateEngine, @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") JavaMailSender mailSender) {
+    @Autowired
+    public MailServiceImpl(MailRepository mailRepository, SpringTemplateEngine thymeleafTemplateEngine,
+                           @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") JavaMailSender mailSender) {
         this.mailRepository = mailRepository;
         this.thymeleafTemplateEngine = thymeleafTemplateEngine;
         this.mailSender = mailSender;
@@ -46,23 +47,20 @@ public class MailServiceImpl implements MailService {
     }
 
     @Scheduled(cron = "*/5 * * * * *")
-    public void sendMail() {
+    public void sendMail() throws MessagingException {
         for (var letter : mailRepository.findAll()) {
-            try {
-                Map<String, Object> templateModel = (Map<String, Object>) SerializationHelper.deserialize(
-                        letter.getTemplateModel());
-                sendLetter(letter.getRecipient(),
-                        templateModel,
-                        letter.getTemplateName(),
-                        letter.getSubject());
-                mailRepository.delete(letter);
-            } catch (Exception e) {
-                log.error(String.format("Error sending mail to mail: %s", letter.getRecipient()));
-            }
+            Map<String, Object> templateModel = (Map<String, Object>) SerializationHelper.deserialize(
+                    letter.getTemplateModel());
+            sendLetter(letter.getRecipient(),
+                    templateModel,
+                    letter.getTemplateName(),
+                    letter.getSubject());
+            mailRepository.delete(letter);
         }
     }
 
-    private void sendLetter(String to, Map<String, Object> templateModel, String templateName, String subject)
+    @Override
+    public void sendLetter(String to, Map<String, Object> templateModel, String templateName, String subject)
             throws MessagingException, MailException {
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
