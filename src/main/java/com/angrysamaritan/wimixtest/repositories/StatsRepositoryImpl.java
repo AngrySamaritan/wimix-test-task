@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -25,9 +27,14 @@ public class StatsRepositoryImpl implements StatsRepository {
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<Long> getCommunicativeUserIds(Date startDate, Date endDate) {
 
-        Long maxMessagesCount = getMaxMessagesCount(startDate, endDate);
+        try {
+            Long maxMessagesCount = getMaxMessagesCount(startDate, endDate);
 
-        return getUserIds(startDate, endDate, maxMessagesCount);
+            return getUserIds(startDate, endDate, maxMessagesCount);
+        } catch (NoResultException ignored) {
+            return new LinkedList<>();
+        }
+
     }
 
     private List<Long> getUserIds(Date startDate, Date endDate, Long maxMessagesCount) {
