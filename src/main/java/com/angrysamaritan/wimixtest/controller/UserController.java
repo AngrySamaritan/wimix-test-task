@@ -1,14 +1,11 @@
 package com.angrysamaritan.wimixtest.controller;
 
-import com.angrysamaritan.wimixtest.dto.LogInReq;
 import com.angrysamaritan.wimixtest.dto.SignUpReq;
 import com.angrysamaritan.wimixtest.exceptions.SignUpException;
-import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import com.angrysamaritan.wimixtest.service.JWTService;
 import com.angrysamaritan.wimixtest.service.SignUpService;
+import com.angrysamaritan.wimixtest.service.implementations.UserDetailsServiceImpl;
 import io.swagger.annotations.Api;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Isolation;
@@ -19,34 +16,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @Api
 public class UserController {
 
-    private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final UserDetailsService userDetailsService;
     private final SignUpService signUpService;
 
-    public UserController(AuthenticationManager authenticationManager, JWTService jwtService,
-                          UserDetailsServiceImpl userDetailsService, SignUpService signUpService) {
-        this.authenticationManager = authenticationManager;
+    public UserController(JWTService jwtService, UserDetailsServiceImpl userDetailsService,
+                          SignUpService signUpService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.signUpService = signUpService;
     }
 
     @PostMapping("/login")
-    public Object login(@ModelAttribute LogInReq authenticationRequest) {
-        String username = authenticationRequest.getUsername();
-        authenticate(username, authenticationRequest.getPassword());
+    public Object login(Principal principal) {
+        String username = principal.getName();
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return jwtService.generateToken(userDetails);
-    }
-
-    private void authenticate(String username, String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
     @PostMapping("/sign_up")

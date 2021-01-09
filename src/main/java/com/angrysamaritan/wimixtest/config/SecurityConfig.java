@@ -24,7 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, RestAuthenticationEntryPoint restAuthenticationEntryPoint, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService,
+                          RestAuthenticationEntryPoint restAuthenticationEntryPoint,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -38,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/sign_up", "/login").permitAll()
+                .antMatchers("/sign_up").permitAll()
                 .antMatchers(
                         "/v2/api-docs",
                         "/configuration/ui",
